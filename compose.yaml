@@ -1,0 +1,15 @@
+services:
+  repoagent:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      REPO_AGENT_ALLOWED_ROOT: /workspace
+      REPO_AGENT_MODEL: ${REPO_AGENT_MODEL:-}
+      REPO_AGENT_API_KEY: ${REPO_AGENT_API_KEY:-}
+      REPO_AGENT_BASE_URL: ${REPO_AGENT_BASE_URL:-https://api.openai.com/v1}
+    volumes:
+      - ${TARGET_REPOSITORY:-.}:/workspace
+    read_only: true
+    tmpfs:
+      - /tmp

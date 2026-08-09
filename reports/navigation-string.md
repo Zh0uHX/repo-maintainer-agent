@@ -1,0 +1,39 @@
+# RepoAgent Benchmark Report
+
+> Generated from executable JSONL cases. A passing case requires both Agent completion and all deterministic file assertions to pass.
+
+## Summary
+
+- Model: deepseek-chat
+- Provider model: deepseek-v4-flash
+- AST tools: disabled
+- Cases: 4
+- Passed: 4
+- Pass rate: 100.0%
+- Average steps: 9.5
+- Average tool calls: 8.5
+- Tool errors: 0
+- Model errors: 0
+- Provider request attempts: 42
+- JSON repair retries: 0
+- AST tool calls: 0
+- Total tokens: 65662
+
+## Cases
+
+| Case | Family | Passed | Status | Steps | Tool calls | Tokens |
+|---|---|---:|---|---:|---:|---:|
+| locate-invoice-total-method | symbol-navigation | yes | completed | 9 | 8 | 13981 |
+| locate-user-repository-lookup | symbol-navigation | yes | completed | 6 | 5 | 7271 |
+| rename-token-store-method | symbol-navigation | yes | completed | 16 | 15 | 32507 |
+| locate-cache-falsey-value-bug | symbol-navigation | yes | completed | 7 | 6 | 11903 |
+
+## Task families
+
+| Family | Passed | Total | Pass rate |
+|---|---:|---:|---:|
+| symbol-navigation | 4 | 4 | 100.0% |
+
+## Interpretation
+
+Results depend on the selected model, endpoint, prompt version, and case set. Do not compare reports unless these inputs are held constant.

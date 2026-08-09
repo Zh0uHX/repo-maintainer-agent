@@ -1,0 +1,303 @@
+{
+  "model": "deepseek-chat",
+  "ast_enabled": true,
+  "total": 4,
+  "passed": 4,
+  "pass_rate": 1.0,
+  "average_steps": 8.5,
+  "average_tool_calls": 7.5,
+  "tool_errors": 0,
+  "total_tokens": 57412,
+  "tool_counts": {
+    "diff": 4,
+    "edit_file": 5,
+    "inspect_python": 4,
+    "list_files": 1,
+    "read_file": 6,
+    "run_check": 4,
+    "search": 4,
+    "symbol_search": 2
+  },
+  "ast_tool_calls": 6,
+  "provider_models": [
+    "deepseek-v4-flash"
+  ],
+  "families": {
+    "symbol-navigation": {
+      "total": 4,
+      "passed": 4,
+      "pass_rate": 1.0
+    }
+  },
+  "results": [
+    {
+      "name": "locate-invoice-total-method",
+      "family": "symbol-navigation",
+      "passed": true,
+      "status": "completed",
+      "assertions": [
+        {
+          "type": "allowed_changed_files",
+          "passed": true,
+          "unexpected": []
+        },
+        {
+          "type": "check_command",
+          "command": "python -m pytest -q",
+          "passed": true
+        }
+      ],
+      "changed_files": [
+        "billing/calculator.py"
+      ],
+      "agent_checks": [
+        {
+          "command": "pytest tests/test_invoice.py -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": ".                                                                        [100%]\n1 passed in 0.00s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "benchmark_checks": [
+        {
+          "command": "python -m pytest -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "..                                                                       [100%]\n2 passed in 0.00s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 9,
+        "model_calls": 10,
+        "model_latency_ms": 11459,
+        "tool_calls": 8,
+        "tool_errors": 0,
+        "tool_counts": {
+          "diff": 1,
+          "edit_file": 1,
+          "inspect_python": 2,
+          "read_file": 2,
+          "run_check": 1,
+          "symbol_search": 1
+        },
+        "changed_files": 1,
+        "checks_passed": 1,
+        "checks_failed": 0,
+        "input_tokens": 12644,
+        "output_tokens": 636,
+        "total_tokens": 13280
+      }
+    },
+    {
+      "name": "locate-user-repository-lookup",
+      "family": "symbol-navigation",
+      "passed": true,
+      "status": "completed",
+      "assertions": [
+        {
+          "type": "allowed_changed_files",
+          "passed": true,
+          "unexpected": []
+        },
+        {
+          "type": "check_command",
+          "command": "python -m pytest -q",
+          "passed": true
+        }
+      ],
+      "changed_files": [
+        "accounts/repository.py"
+      ],
+      "agent_checks": [
+        {
+          "command": "pytest tests/test_accounts.py -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": ".                                                                        [100%]\n1 passed in 0.00s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "benchmark_checks": [
+        {
+          "command": "python -m pytest -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "..                                                                       [100%]\n2 passed in 0.01s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 6,
+        "model_calls": 7,
+        "model_latency_ms": 9824,
+        "tool_calls": 5,
+        "tool_errors": 0,
+        "tool_counts": {
+          "diff": 1,
+          "edit_file": 1,
+          "read_file": 1,
+          "run_check": 1,
+          "symbol_search": 1
+        },
+        "changed_files": 1,
+        "checks_passed": 1,
+        "checks_failed": 0,
+        "input_tokens": 7749,
+        "output_tokens": 632,
+        "total_tokens": 8381
+      }
+    },
+    {
+      "name": "rename-token-store-method",
+      "family": "symbol-navigation",
+      "passed": true,
+      "status": "completed",
+      "assertions": [
+        {
+          "type": "not_contains",
+          "path": "auth/store.py",
+          "passed": true
+        },
+        {
+          "type": "not_contains",
+          "path": "auth/session.py",
+          "passed": true
+        },
+        {
+          "type": "allowed_changed_files",
+          "passed": true,
+          "unexpected": []
+        },
+        {
+          "type": "check_command",
+          "command": "python -m pytest -q",
+          "passed": true
+        }
+      ],
+      "changed_files": [
+        "auth/session.py",
+        "auth/store.py"
+      ],
+      "agent_checks": [
+        {
+          "command": "pytest tests/test_tokens.py",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0\nrootdir: <temporary-repository>\nplugins: anyio-4.14.2\ncollected 1 item\n\ntests/test_tokens.py .                                                   [100%]\n\n============================== 1 passed in 0.01s ===============================\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "benchmark_checks": [
+        {
+          "command": "python -m pytest -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "..                                                                       [100%]\n2 passed in 0.01s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 13,
+        "model_calls": 14,
+        "model_latency_ms": 15672,
+        "tool_calls": 12,
+        "tool_errors": 0,
+        "tool_counts": {
+          "diff": 1,
+          "edit_file": 2,
+          "inspect_python": 1,
+          "list_files": 1,
+          "read_file": 2,
+          "run_check": 1,
+          "search": 4
+        },
+        "changed_files": 2,
+        "checks_passed": 1,
+        "checks_failed": 0,
+        "input_tokens": 24289,
+        "output_tokens": 1046,
+        "total_tokens": 25335
+      }
+    },
+    {
+      "name": "locate-cache-falsey-value-bug",
+      "family": "symbol-navigation",
+      "passed": true,
+      "status": "completed",
+      "assertions": [
+        {
+          "type": "allowed_changed_files",
+          "passed": true,
+          "unexpected": []
+        },
+        {
+          "type": "check_command",
+          "command": "python -m pytest -q",
+          "passed": true
+        }
+      ],
+      "changed_files": [
+        "cache/core.py"
+      ],
+      "agent_checks": [
+        {
+          "command": "pytest tests/test_cache.py",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0\nrootdir: <temporary-repository>\nplugins: anyio-4.14.2\ncollected 1 item\n\ntests/test_cache.py .                                                    [100%]\n\n============================== 1 passed in 0.01s ===============================\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "benchmark_checks": [
+        {
+          "command": "python -m pytest -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "...                                                                      [100%]\n3 passed in 0.01s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 6,
+        "model_calls": 7,
+        "model_latency_ms": 13090,
+        "tool_calls": 5,
+        "tool_errors": 0,
+        "tool_counts": {
+          "diff": 1,
+          "edit_file": 1,
+          "inspect_python": 1,
+          "read_file": 1,
+          "run_check": 1
+        },
+        "changed_files": 1,
+        "checks_passed": 1,
+        "checks_failed": 0,
+        "input_tokens": 9567,
+        "output_tokens": 849,
+        "total_tokens": 10416,
+        "provider_models": [
+          "deepseek-v4-flash"
+        ]
+      }
+    }
+  ]
+}

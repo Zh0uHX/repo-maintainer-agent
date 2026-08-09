@@ -1,0 +1,807 @@
+{
+  "model": "deepseek-chat",
+  "ast_enabled": true,
+  "total": 10,
+  "passed": 10,
+  "pass_rate": 1.0,
+  "average_steps": 6.9,
+  "average_tool_calls": 5.9,
+  "tool_errors": 0,
+  "total_tokens": 95906,
+  "families": {
+    "api-contract": {
+      "total": 2,
+      "passed": 2,
+      "pass_rate": 1.0
+    },
+    "bug-fix": {
+      "total": 2,
+      "passed": 2,
+      "pass_rate": 1.0
+    },
+    "cross-file-refactor": {
+      "total": 2,
+      "passed": 2,
+      "pass_rate": 1.0
+    },
+    "input-validation": {
+      "total": 2,
+      "passed": 2,
+      "pass_rate": 1.0
+    },
+    "test-addition": {
+      "total": 2,
+      "passed": 2,
+      "pass_rate": 1.0
+    }
+  },
+  "results": [
+    {
+      "name": "discount-percentage",
+      "family": "bug-fix",
+      "passed": true,
+      "status": "completed",
+      "assertions": [
+        {
+          "type": "allowed_changed_files",
+          "passed": true,
+          "unexpected": []
+        },
+        {
+          "type": "check_command",
+          "command": "python -m pytest -q",
+          "passed": true
+        }
+      ],
+      "changed_files": [
+        "pricing.py"
+      ],
+      "agent_checks": [
+        {
+          "command": "pytest tests/test_pricing.py",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0\nrootdir: <temporary-repository>\nplugins: anyio-4.14.2\ncollected 2 items\n\ntests/test_pricing.py ..                                                 [100%]\n\n============================== 2 passed in 0.01s ===============================\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "benchmark_checks": [
+        {
+          "command": "python -m pytest -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "...                                                                      [100%]\n3 passed in 0.00s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 7,
+        "model_calls": 8,
+        "model_latency_ms": 11862,
+        "tool_calls": 6,
+        "tool_errors": 0,
+        "tool_counts": {
+          "diff": 1,
+          "edit_file": 1,
+          "list_files": 1,
+          "read_file": 2,
+          "run_check": 1
+        },
+        "changed_files": 1,
+        "checks_passed": 1,
+        "checks_failed": 0,
+        "input_tokens": 8223,
+        "output_tokens": 665,
+        "total_tokens": 8888
+      }
+    },
+    {
+      "name": "inclusive-range-boundary",
+      "family": "bug-fix",
+      "passed": true,
+      "status": "completed",
+      "assertions": [
+        {
+          "type": "allowed_changed_files",
+          "passed": true,
+          "unexpected": []
+        },
+        {
+          "type": "check_command",
+          "command": "python -m pytest -q",
+          "passed": true
+        }
+      ],
+      "changed_files": [
+        "sequence.py"
+      ],
+      "agent_checks": [
+        {
+          "command": "python -m pytest tests/test_sequence.py -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": ".                                                                        [100%]\n1 passed in 0.00s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "benchmark_checks": [
+        {
+          "command": "python -m pytest -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "...                                                                      [100%]\n3 passed in 0.00s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 7,
+        "model_calls": 8,
+        "model_latency_ms": 8792,
+        "tool_calls": 6,
+        "tool_errors": 0,
+        "tool_counts": {
+          "diff": 1,
+          "edit_file": 1,
+          "list_files": 1,
+          "read_file": 2,
+          "run_check": 1
+        },
+        "changed_files": 1,
+        "checks_passed": 1,
+        "checks_failed": 0,
+        "input_tokens": 6979,
+        "output_tokens": 488,
+        "total_tokens": 7467
+      }
+    },
+    {
+      "name": "validate-network-port",
+      "family": "input-validation",
+      "passed": true,
+      "status": "completed",
+      "assertions": [
+        {
+          "type": "contains",
+          "path": "networking.py",
+          "passed": true
+        },
+        {
+          "type": "allowed_changed_files",
+          "passed": true,
+          "unexpected": []
+        },
+        {
+          "type": "check_command",
+          "command": "python -m pytest -q",
+          "passed": true
+        }
+      ],
+      "changed_files": [
+        "networking.py"
+      ],
+      "agent_checks": [
+        {
+          "command": "python -m pytest tests/test_networking.py",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0\nrootdir: <temporary-repository>\nplugins: anyio-4.14.2\ncollected 1 item\n\ntests/test_networking.py .                                               [100%]\n\n============================== 1 passed in 0.01s ===============================\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "benchmark_checks": [
+        {
+          "command": "python -m pytest -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "......                                                                   [100%]\n6 passed in 0.01s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 7,
+        "model_calls": 8,
+        "model_latency_ms": 11799,
+        "tool_calls": 6,
+        "tool_errors": 0,
+        "tool_counts": {
+          "diff": 1,
+          "edit_file": 1,
+          "list_files": 1,
+          "read_file": 2,
+          "run_check": 1
+        },
+        "changed_files": 1,
+        "checks_passed": 1,
+        "checks_failed": 0,
+        "input_tokens": 9247,
+        "output_tokens": 809,
+        "total_tokens": 10056
+      }
+    },
+    {
+      "name": "validate-pagination",
+      "family": "input-validation",
+      "passed": true,
+      "status": "completed",
+      "assertions": [
+        {
+          "type": "contains",
+          "path": "pagination.py",
+          "passed": true
+        },
+        {
+          "type": "allowed_changed_files",
+          "passed": true,
+          "unexpected": []
+        },
+        {
+          "type": "check_command",
+          "command": "python -m pytest -q",
+          "passed": true
+        }
+      ],
+      "changed_files": [
+        "pagination.py"
+      ],
+      "agent_checks": [
+        {
+          "command": "pytest tests/test_pagination.py",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0\nrootdir: <temporary-repository>\nplugins: anyio-4.14.2\ncollected 1 item\n\ntests/test_pagination.py .                                               [100%]\n\n============================== 1 passed in 0.01s ===============================\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "benchmark_checks": [
+        {
+          "command": "python -m pytest -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": ".....                                                                    [100%]\n5 passed in 0.00s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 7,
+        "model_calls": 8,
+        "model_latency_ms": 11461,
+        "tool_calls": 6,
+        "tool_errors": 0,
+        "tool_counts": {
+          "diff": 1,
+          "edit_file": 1,
+          "list_files": 1,
+          "read_file": 2,
+          "run_check": 1
+        },
+        "changed_files": 1,
+        "checks_passed": 1,
+        "checks_failed": 0,
+        "input_tokens": 8976,
+        "output_tokens": 791,
+        "total_tokens": 9767
+      }
+    },
+    {
+      "name": "redact-user-password",
+      "family": "api-contract",
+      "passed": true,
+      "status": "completed",
+      "assertions": [
+        {
+          "type": "allowed_changed_files",
+          "passed": true,
+          "unexpected": []
+        },
+        {
+          "type": "check_command",
+          "command": "python -m pytest -q",
+          "passed": true
+        }
+      ],
+      "changed_files": [
+        "user.py"
+      ],
+      "agent_checks": [
+        {
+          "command": "pytest tests/test_user.py",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0\nrootdir: <temporary-repository>\nplugins: anyio-4.14.2\ncollected 1 item\n\ntests/test_user.py .                                                     [100%]\n\n============================== 1 passed in 0.01s ===============================\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "benchmark_checks": [
+        {
+          "command": "python -m pytest -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "..                                                                       [100%]\n2 passed in 0.00s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 7,
+        "model_calls": 8,
+        "model_latency_ms": 10168,
+        "tool_calls": 6,
+        "tool_errors": 0,
+        "tool_counts": {
+          "diff": 1,
+          "edit_file": 1,
+          "list_files": 1,
+          "read_file": 2,
+          "run_check": 1
+        },
+        "changed_files": 1,
+        "checks_passed": 1,
+        "checks_failed": 0,
+        "input_tokens": 8556,
+        "output_tokens": 675,
+        "total_tokens": 9231
+      }
+    },
+    {
+      "name": "normalize-account-status",
+      "family": "api-contract",
+      "passed": true,
+      "status": "completed",
+      "assertions": [
+        {
+          "type": "contains",
+          "path": "status.py",
+          "passed": true
+        },
+        {
+          "type": "allowed_changed_files",
+          "passed": true,
+          "unexpected": []
+        },
+        {
+          "type": "check_command",
+          "command": "python -m pytest -q",
+          "passed": true
+        }
+      ],
+      "changed_files": [
+        "status.py"
+      ],
+      "agent_checks": [
+        {
+          "command": "pytest tests/test_status.py",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0\nrootdir: <temporary-repository>\nplugins: anyio-4.14.2\ncollected 2 items\n\ntests/test_status.py ..                                                  [100%]\n\n============================== 2 passed in 0.01s ===============================\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "benchmark_checks": [
+        {
+          "command": "python -m pytest -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "....                                                                     [100%]\n4 passed in 0.00s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 6,
+        "model_calls": 7,
+        "model_latency_ms": 9445,
+        "tool_calls": 5,
+        "tool_errors": 0,
+        "tool_counts": {
+          "diff": 1,
+          "edit_file": 1,
+          "read_file": 2,
+          "run_check": 1
+        },
+        "changed_files": 1,
+        "checks_passed": 1,
+        "checks_failed": 0,
+        "input_tokens": 7508,
+        "output_tokens": 657,
+        "total_tokens": 8165
+      }
+    },
+    {
+      "name": "add-safe-divide-tests",
+      "family": "test-addition",
+      "passed": true,
+      "status": "completed",
+      "assertions": [
+        {
+          "type": "contains",
+          "path": "tests/test_math_utils.py",
+          "passed": true
+        },
+        {
+          "type": "allowed_changed_files",
+          "passed": true,
+          "unexpected": []
+        },
+        {
+          "type": "check_command",
+          "command": "python -m pytest -q",
+          "passed": true
+        },
+        {
+          "type": "mutation_killed",
+          "path": "math_utils.py",
+          "passed": true
+        },
+        {
+          "type": "mutation_killed",
+          "path": "math_utils.py",
+          "passed": true
+        }
+      ],
+      "changed_files": [
+        "tests/test_math_utils.py"
+      ],
+      "agent_checks": [
+        {
+          "command": "pytest tests/test_math_utils.py -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "..                                                                       [100%]\n2 passed in 0.00s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "benchmark_checks": [
+        {
+          "command": "python -m pytest -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "..                                                                       [100%]\n2 passed in 0.00s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "mutation_checks": [
+        {
+          "path": "math_utils.py",
+          "check": {
+            "command": "python -m pytest -q",
+            "executable": "python",
+            "exit_code": 1,
+            "stdout": ".F                                                                       [100%]\n=================================== FAILURES ===================================\n___________________________ test_safe_divide_by_zero ___________________________\n\n    def test_safe_divide_by_zero():\n>       with pytest.raises(ZeroDivisionError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE ZeroDivisionError\n\ntests/test_math_utils.py:11: Failed\n=========================== short test summary info ============================\nFAILED tests/test_math_utils.py::test_safe_divide_by_zero - Failed: DID NOT R...\n1 failed, 1 passed in 0.01s\n",
+            "stderr": "",
+            "timed_out": false
+          },
+          "killed": true
+        },
+        {
+          "path": "math_utils.py",
+          "check": {
+            "command": "python -m pytest -q",
+            "executable": "python",
+            "exit_code": 1,
+            "stdout": "F.                                                                       [100%]\n=================================== FAILURES ===================================\n___________________________ test_safe_divide_success ___________________________\n\n    def test_safe_divide_success():\n>       assert safe_divide(10, 2) == 5\nE       assert 12 == 5\nE        +  where 12 = safe_divide(10, 2)\n\ntests/test_math_utils.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_math_utils.py::test_safe_divide_success - assert 12 == 5\n1 failed, 1 passed in 0.01s\n",
+            "stderr": "",
+            "timed_out": false
+          },
+          "killed": true
+        }
+      ],
+      "metrics": {
+        "completed": true,
+        "steps": 5,
+        "model_calls": 6,
+        "model_latency_ms": 7896,
+        "tool_calls": 4,
+        "tool_errors": 0,
+        "tool_counts": {
+          "diff": 1,
+          "read_file": 1,
+          "run_check": 1,
+          "write_file": 1
+        },
+        "changed_files": 1,
+        "checks_passed": 1,
+        "checks_failed": 0,
+        "input_tokens": 5832,
+        "output_tokens": 619,
+        "total_tokens": 6451
+      }
+    },
+    {
+      "name": "add-parse-bool-tests",
+      "family": "test-addition",
+      "passed": true,
+      "status": "completed",
+      "assertions": [
+        {
+          "type": "contains",
+          "path": "tests/test_flags.py",
+          "passed": true
+        },
+        {
+          "type": "allowed_changed_files",
+          "passed": true,
+          "unexpected": []
+        },
+        {
+          "type": "check_command",
+          "command": "python -m pytest -q",
+          "passed": true
+        },
+        {
+          "type": "mutation_killed",
+          "path": "flags.py",
+          "passed": true
+        },
+        {
+          "type": "mutation_killed",
+          "path": "flags.py",
+          "passed": true
+        },
+        {
+          "type": "mutation_killed",
+          "path": "flags.py",
+          "passed": true
+        }
+      ],
+      "changed_files": [
+        "tests/test_flags.py"
+      ],
+      "agent_checks": [
+        {
+          "command": "pytest tests/test_flags.py",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0\nrootdir: <temporary-repository>\nplugins: anyio-4.14.2\ncollected 5 items\n\ntests/test_flags.py .....                                                [100%]\n\n============================== 5 passed in 0.01s ===============================\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "benchmark_checks": [
+        {
+          "command": "python -m pytest -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": ".....                                                                    [100%]\n5 passed in 0.00s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "mutation_checks": [
+        {
+          "path": "flags.py",
+          "check": {
+            "command": "python -m pytest -q",
+            "executable": "python",
+            "exit_code": 1,
+            "stdout": ".F.F.                                                                    [100%]\n=================================== FAILURES ===================================\n____________________________ test_parse_bool_false _____________________________\n\n    def test_parse_bool_false():\n>       assert parse_bool('false') is False\nE       AssertionError: assert True is False\nE        +  where True = parse_bool('false')\n\ntests/test_flags.py:11: AssertionError\n______________________________ test_parse_bool_0 _______________________________\n\n    def test_parse_bool_0():\n>       assert parse_bool('0') is False\nE       AssertionError: assert True is False\nE        +  where True = parse_bool('0')\n\ntests/test_flags.py:19: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_flags.py::test_parse_bool_false - AssertionError: assert Tr...\nFAILED tests/test_flags.py::test_parse_bool_0 - AssertionError: assert True i...\n2 failed, 3 passed in 0.01s\n",
+            "stderr": "",
+            "timed_out": false
+          },
+          "killed": true
+        },
+        {
+          "path": "flags.py",
+          "check": {
+            "command": "python -m pytest -q",
+            "executable": "python",
+            "exit_code": 1,
+            "stdout": "..FF.                                                                    [100%]\n=================================== FAILURES ===================================\n______________________________ test_parse_bool_1 _______________________________\n\n    def test_parse_bool_1():\n>       assert parse_bool('1') is True\n               ^^^^^^^^^^^^^^^\n\ntests/test_flags.py:15: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nvalue = '1'\n\n    def parse_bool(value):\n        normalized = value.strip().lower()\n        if normalized == 'true':\n            return True\n        if normalized == 'false':\n            return False\n>       raise ValueError(f'unsupported boolean: {value}')\nE       ValueError: unsupported boolean: 1\n\nflags.py:7: ValueError\n______________________________ test_parse_bool_0 _______________________________\n\n    def test_parse_bool_0():\n>       assert parse_bool('0') is False\n               ^^^^^^^^^^^^^^^\n\ntests/test_flags.py:19: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nvalue = '0'\n\n    def parse_bool(value):\n        normalized = value.strip().lower()\n        if normalized == 'true':\n            return True\n        if normalized == 'false':\n            return False\n>       raise ValueError(f'unsupported boolean: {value}')\nE       ValueError: unsupported boolean: 0\n\nflags.py:7: ValueError\n=========================== short test summary info ============================\nFAILED tests/test_flags.py::test_parse_bool_1 - ValueError: unsupported boole...\nFAILED tests/test_flags.py::test_parse_bool_0 - ValueError: unsupported boole...\n2 failed, 3 passed in 0.01s\n",
+            "stderr": "",
+            "timed_out": false
+          },
+          "killed": true
+        },
+        {
+          "path": "flags.py",
+          "check": {
+            "command": "python -m pytest -q",
+            "executable": "python",
+            "exit_code": 1,
+            "stdout": "....F                                                                    [100%]\n=================================== FAILURES ===================================\n______________________ test_parse_bool_unsupported_raises ______________________\n\n    def test_parse_bool_unsupported_raises():\n>       with pytest.raises(ValueError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE ValueError\n\ntests/test_flags.py:23: Failed\n=========================== short test summary info ============================\nFAILED tests/test_flags.py::test_parse_bool_unsupported_raises - Failed: DID ...\n1 failed, 4 passed in 0.01s\n",
+            "stderr": "",
+            "timed_out": false
+          },
+          "killed": true
+        }
+      ],
+      "metrics": {
+        "completed": true,
+        "steps": 5,
+        "model_calls": 6,
+        "model_latency_ms": 8889,
+        "tool_calls": 4,
+        "tool_errors": 0,
+        "tool_counts": {
+          "diff": 1,
+          "read_file": 1,
+          "run_check": 1,
+          "write_file": 1
+        },
+        "changed_files": 1,
+        "checks_passed": 1,
+        "checks_failed": 0,
+        "input_tokens": 6806,
+        "output_tokens": 733,
+        "total_tokens": 7539
+      }
+    },
+    {
+      "name": "rename-display-name-api",
+      "family": "cross-file-refactor",
+      "passed": true,
+      "status": "completed",
+      "assertions": [
+        {
+          "type": "not_contains",
+          "path": "formatter.py",
+          "passed": true
+        },
+        {
+          "type": "not_contains",
+          "path": "service.py",
+          "passed": true
+        },
+        {
+          "type": "allowed_changed_files",
+          "passed": true,
+          "unexpected": []
+        },
+        {
+          "type": "check_command",
+          "command": "python -m pytest -q",
+          "passed": true
+        }
+      ],
+      "changed_files": [
+        "formatter.py",
+        "service.py"
+      ],
+      "agent_checks": [
+        {
+          "command": "pytest tests/test_service.py",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0\nrootdir: <temporary-repository>\nplugins: anyio-4.14.2\ncollected 2 items\n\ntests/test_service.py ..                                                 [100%]\n\n============================== 2 passed in 0.01s ===============================\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "benchmark_checks": [
+        {
+          "command": "python -m pytest -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "...                                                                      [100%]\n3 passed in 0.00s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 9,
+        "model_calls": 10,
+        "model_latency_ms": 13798,
+        "tool_calls": 8,
+        "tool_errors": 0,
+        "tool_counts": {
+          "diff": 1,
+          "edit_file": 2,
+          "read_file": 3,
+          "run_check": 1,
+          "search": 1
+        },
+        "changed_files": 2,
+        "checks_passed": 1,
+        "checks_failed": 0,
+        "input_tokens": 13142,
+        "output_tokens": 837,
+        "total_tokens": 13979
+      }
+    },
+    {
+      "name": "extract-shared-display-name",
+      "family": "cross-file-refactor",
+      "passed": true,
+      "status": "completed",
+      "assertions": [
+        {
+          "type": "contains",
+          "path": "names.py",
+          "passed": true
+        },
+        {
+          "type": "contains",
+          "path": "employee.py",
+          "passed": true
+        },
+        {
+          "type": "contains",
+          "path": "customer.py",
+          "passed": true
+        },
+        {
+          "type": "allowed_changed_files",
+          "passed": true,
+          "unexpected": []
+        },
+        {
+          "type": "check_command",
+          "command": "python -m pytest -q",
+          "passed": true
+        }
+      ],
+      "changed_files": [
+        "customer.py",
+        "employee.py",
+        "names.py"
+      ],
+      "agent_checks": [
+        {
+          "command": "pytest tests/test_labels.py",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0\nrootdir: <temporary-repository>\nplugins: anyio-4.14.2\ncollected 2 items\n\ntests/test_labels.py ..                                                  [100%]\n\n============================== 2 passed in 0.01s ===============================\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "benchmark_checks": [
+        {
+          "command": "python -m pytest -q",
+          "executable": "python",
+          "exit_code": 0,
+          "stdout": "...                                                                      [100%]\n3 passed in 0.00s\n",
+          "stderr": "",
+          "timed_out": false
+        }
+      ],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 9,
+        "model_calls": 10,
+        "model_latency_ms": 12386,
+        "tool_calls": 8,
+        "tool_errors": 0,
+        "tool_counts": {
+          "diff": 1,
+          "edit_file": 2,
+          "read_file": 3,
+          "run_check": 1,
+          "write_file": 1
+        },
+        "changed_files": 3,
+        "checks_passed": 1,
+        "checks_failed": 0,
+        "input_tokens": 13508,
+        "output_tokens": 855,
+        "total_tokens": 14363
+      }
+    }
+  ]
+}
