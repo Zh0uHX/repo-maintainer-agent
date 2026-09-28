@@ -13,6 +13,7 @@ from .config import AgentConfig
 from .demo import run_demo
 from .evals import (
     evaluate_case,
+    export_predictions,
     load_cases,
     merge_benchmark_reports,
     render_markdown_report,
@@ -61,6 +62,12 @@ def build_parser() -> argparse.ArgumentParser:
     evaluate.add_argument("--disable-ast", action="store_true", help="Run string-search baseline")
     evaluate.add_argument(
         "--disable-context", action="store_true", help="Disable ranked context retrieval"
+    )
+    evaluate.add_argument("--max-steps", type=int, default=18)
+    evaluate.add_argument(
+        "--predictions",
+        type=Path,
+        help="Write SWE-bench prediction JSONL for edit-mode real-repository cases",
     )
     evaluate.add_argument("--output", type=Path, help="Write the full JSON report")
     evaluate.add_argument(
@@ -294,6 +301,14 @@ def main(argv: list[str] | None = None) -> int:
                 break
         report = _benchmark_report(config, results)
         _write_benchmark_report(report, args.output, args.markdown)
+        if args.predictions:
+            _atomic_write(
+                args.predictions,
+                "".join(
+                    json.dumps(item, ensure_ascii=False) + "\n"
+                    for item in export_predictions(report, config.model)
+                ),
+            )
         print(json.dumps(report, ensure_ascii=False, indent=2))
         if any(item.get("status") == "error" for item in results):
             return 2

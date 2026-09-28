@@ -117,7 +117,21 @@ def aggregate_results(results: list[dict[str, Any]]) -> dict[str, Any]:
         "context_retrieval_calls": tool_counts["retrieve_context"],
         "provider_models": sorted(provider_models),
         "families": dict(sorted(families.items())),
+        **_localization_summary(results),
     }
+
+
+def _localization_summary(results: list[dict[str, Any]]) -> dict[str, Any]:
+    scored = [
+        item["localization"] for item in results if isinstance(item.get("localization"), dict)
+    ]
+    if not scored:
+        return {}
+    summary: dict[str, Any] = {"cases": len(scored)}
+    for key in sorted({key for item in scored for key in item if "@" in key}):
+        values = [float(item[key]) for item in scored if item.get(key) is not None]
+        summary[key] = round(sum(values) / len(values), 4) if values else None
+    return {"localization": summary}
 
 
 def _integer_usage(usage: Any, *names: str) -> int:

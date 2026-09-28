@@ -12,6 +12,7 @@ from .agent import RepositoryAgent
 from .config import AgentConfig
 from .llm import ModelClient
 from .metrics import aggregate_results, summarize_trace
+from .realrepo import materialize, score_localization
 from .tools import RepositoryTools, ToolError
 
 
@@ -60,7 +61,8 @@ def evaluate_case(
         except (OSError, RuntimeError, TypeError, ValueError, ToolError) as exc:
             result = _error_result(case, root, exc)
             if artifacts_dir is not None:
-                destination = _preserve_artifact(root, artifacts_dir, case)
+                source = root / ".repoagent" if "repo" in case else root
+                destination = _preserve_artifact(source, artifacts_dir, case)
                 (destination / "evaluation-error.json").write_text(
                     json.dumps(result, ensure_ascii=False, indent=2) + "\n",
                     encoding="utf-8",
@@ -75,10 +77,26 @@ def _evaluate_case_in_root(
     artifacts_dir: Path | None,
     root: Path,
 ) -> dict[str, Any]:
-    _write_fixture_files(root, case.get("files", {}))
-    case_config = replace(config, root=root, apply_changes=True, allow_checks=True)
+    real_repo = "repo" in case
+    mode = str(case.get("mode", "edit"))
+    if real_repo:
+        materialize(str(case["repo"]), str(case["base_commit"]), root)
+    else:
+        _write_fixture_files(root, case.get("files", {}))
+    case_config = replace(
+        config,
+        root=root,
+        task_mode=mode,
+        apply_changes=mode == "edit",
+        # Real repositories have no installed environment, so their checks cannot run locally.
+        allow_checks=bool(case.get("allow_checks", not real_repo)),
+    )
     result = RepositoryAgent(case_config, client).run(str(case["task"]))
     assertions: list[dict[str, Any]] = []
+    localization = None
+    if mode == "localize":
+        localization = score_localization(result.locations, case.get("gold", {}))
+        assertions.append({"type": "file_acc@1", "passed": localization["file_acc@1"]})
     for relative, expected in case.get("contains", {}).items():
         target = root / relative
         actual = target.read_text(encoding="utf-8") if target.exists() else ""
@@ -135,10 +153,19 @@ def _evaluate_case_in_root(
         assertions.append({"type": "mutation_killed", "path": relative, "passed": killed})
     passed = result.status == "completed" and all(item["passed"] for item in assertions)
     if artifacts_dir is not None:
-        _preserve_artifact(root, artifacts_dir, case)
+        # A real repository can be hundreds of megabytes; keep only the Agent's run records.
+        _preserve_artifact(root / ".repoagent" if real_repo else root, artifacts_dir, case)
+    extra: dict[str, Any] = {}
+    if localization is not None:
+        extra["localization"] = localization
+        extra["locations"] = result.locations
+    if real_repo and mode == "edit":
+        extra["model_patch"] = result.diff
     return {
         "name": case.get("name", case["task"]),
         "family": case.get("family", "uncategorized"),
+        **({"instance_id": case["instance_id"]} if "instance_id" in case else {}),
+        **extra,
         "passed": passed,
         "status": result.status,
         "assertions": assertions,
@@ -203,8 +230,9 @@ def _empty_metrics() -> dict[str, Any]:
 def _preserve_artifact(root: Path, artifacts_dir: Path, case: dict[str, Any]) -> Path:
     safe_name = re.sub(r"[^A-Za-z0-9_.-]+", "-", str(case.get("name", "case"))).strip("-")
     destination = artifacts_dir / (safe_name or "case")
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copytree(root, destination, dirs_exist_ok=True)
+    destination.mkdir(parents=True, exist_ok=True)
+    if root.exists():
+        shutil.copytree(root, destination, dirs_exist_ok=True)
     return destination
 
 
@@ -262,6 +290,7 @@ def render_markdown_report(report: dict[str, Any]) -> str:
         f"- JSON repair retries: {report.get('parse_retries', 0)}",
         f"- AST tool calls: {report.get('ast_tool_calls', 0)}",
         f"- Total tokens: {report.get('total_tokens', 0)}",
+        *_localization_summary_lines(report.get("localization")),
         "",
         "## Cases",
         "",
@@ -307,3 +336,26 @@ def render_markdown_report(report: dict[str, Any]) -> str:
         ]
     )
     return "\n".join(lines)
+
+
+def _localization_summary_lines(summary: Any) -> list[str]:
+    if not isinstance(summary, dict):
+        return []
+    lines = ["", f"### Localization (n={summary['cases']})", ""]
+    for key, value in summary.items():
+        if key != "cases" and value is not None:
+            lines.append(f"- {key}: {float(value):.1%}")
+    return lines
+
+
+def export_predictions(report: dict[str, Any], model_name: str) -> list[dict[str, str]]:
+    """SWE-bench prediction records for edit-mode real-repository results."""
+    return [
+        {
+            "instance_id": str(item["instance_id"]),
+            "model_name_or_path": model_name,
+            "model_patch": str(item.get("model_patch", "")),
+        }
+        for item in report.get("results", [])
+        if "instance_id" in item and "model_patch" in item
+    ]
