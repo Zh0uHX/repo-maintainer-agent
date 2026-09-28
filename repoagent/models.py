@@ -40,6 +40,7 @@ class AgentResult:
     trace_path: str
     diff: str = ""
     metrics: dict[str, Any] = field(default_factory=dict)
+    locations: list[dict[str, str]] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         value = asdict(self)

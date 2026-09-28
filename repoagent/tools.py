@@ -64,17 +64,23 @@ class RepositoryTools:
         self.checks: list[dict[str, Any]] = []
         self._originally_missing: set[str] = set()
         self._previews: list[str] = []
+        self._symbol_cache: dict[str, tuple[int, int, dict[str, Any]]] = {}
 
     def execute(self, name: str, args: dict[str, Any]) -> dict[str, Any]:
         dispatch = {
             "list_files": self.list_files,
             "read_file": self.read_file,
             "search": self.search,
-            "edit_file": self.edit_file,
-            "write_file": self.write_file,
-            "run_check": self.run_check,
-            "diff": self.diff,
         }
+        if self.config.task_mode == "edit":
+            dispatch.update(
+                {
+                    "edit_file": self.edit_file,
+                    "write_file": self.write_file,
+                    "run_check": self.run_check,
+                    "diff": self.diff,
+                }
+            )
         if self.config.enable_ast_tools:
             dispatch.update(
                 {
@@ -181,7 +187,42 @@ class RepositoryTools:
         target = self._resolve(path)
         if target.suffix != ".py":
             raise ToolError("inspect_python only supports Python source files.")
-        return inspect_python_file(target, path, self.config.max_file_bytes)
+        return self._inspect_cached(target, path)
+
+    def _inspect_cached(self, target: Path, relative: str) -> dict[str, Any]:
+        """Parse a Python file once per (mtime, size); edits invalidate the entry."""
+        stat = target.stat()
+        cached = self._symbol_cache.get(relative)
+        if cached and cached[0] == stat.st_mtime_ns and cached[1] == stat.st_size:
+            return cached[2]
+        result = inspect_python_file(target, relative, self.config.max_file_bytes)
+        self._symbol_cache[relative] = (stat.st_mtime_ns, stat.st_size, result)
+        return result
+
+    def repository_overview(self, max_entries: int = 60) -> dict[str, Any]:
+        """Summarize directories by file count so large repositories fit in the plan prompt."""
+        counts: dict[str, int] = {}
+        top_files: list[str] = []
+        total = 0
+        for current, dirs, names in os.walk(self.root):
+            dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+            rel_dir = Path(current).relative_to(self.root)
+            for name in names:
+                if _is_sensitive_name(name) or (Path(current) / name).is_symlink():
+                    continue
+                total += 1
+                if not rel_dir.parts:
+                    top_files.append(name)
+                    continue
+                key = "/".join(rel_dir.parts[:2])
+                counts[key] = counts.get(key, 0) + 1
+        ranked = sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:max_entries]
+        return {
+            "total_files": total,
+            "top_level_files": sorted(top_files)[:max_entries],
+            "directories": {path: count for path, count in sorted(ranked)},
+            "truncated": len(counts) > max_entries or len(top_files) > max_entries,
+        }
 
     def symbol_search(self, name: str, kind: str = "", limit: int = 80) -> dict[str, Any]:
         if not name:
@@ -192,7 +233,7 @@ class RepositoryTools:
         parse_errors: list[dict[str, str]] = []
         for path in iter_python_files(self.root, SKIP_DIRS):
             relative = path.relative_to(self.root).as_posix()
-            result = inspect_python_file(path, relative, self.config.max_file_bytes)
+            result = self._inspect_cached(path, relative)
             if result["error"]:
                 parse_errors.append({"path": relative, "error": result["error"]})
                 continue
@@ -241,7 +282,7 @@ class RepositoryTools:
             indexed_bytes += text_bytes
             symbols: list[dict[str, Any]] = []
             if target.suffix == ".py":
-                inspected = inspect_python_file(target, relative, self.config.max_file_bytes)
+                inspected = self._inspect_cached(target, relative)
                 if inspected["error"]:
                     parse_errors.append({"path": relative, "error": inspected["error"]})
                 else:

@@ -157,7 +157,9 @@ class EvaluationTests(unittest.TestCase):
             destination = artifacts / "passing-case"
             traces = list(destination.glob(".repoagent/runs/*/trace.jsonl"))
             self.assertEqual(len(traces), 1)
-            lines = [line for line in traces[0].read_text(encoding="utf-8").splitlines() if line.strip()]
+            lines = [
+                line for line in traces[0].read_text(encoding="utf-8").splitlines() if line.strip()
+            ]
             self.assertGreater(len(lines), 0)
             events = [json.loads(line)["event"] for line in lines]
             self.assertIn("run_started", events)

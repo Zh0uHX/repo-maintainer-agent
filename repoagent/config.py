@@ -4,6 +4,8 @@ import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
+TASK_MODES = ("edit", "localize")
+
 DEFAULT_CHECK_PREFIXES = (
     ("python", "-m", "unittest"),
     ("python", "-m", "pytest"),
@@ -33,6 +35,7 @@ class AgentConfig:
     allow_checks: bool = False
     enable_ast_tools: bool = True
     enable_context_retrieval: bool = True
+    task_mode: str = "edit"
     max_steps: int = 18
     max_changed_files: int = 12
     max_file_bytes: int = 512_000
@@ -40,6 +43,10 @@ class AgentConfig:
     allowed_check_prefixes: tuple[tuple[str, ...], ...] = field(
         default_factory=lambda: DEFAULT_CHECK_PREFIXES
     )
+
+    def __post_init__(self) -> None:
+        if self.task_mode not in TASK_MODES:
+            raise ValueError(f"task_mode must be one of {TASK_MODES}, got {self.task_mode!r}.")
 
     @classmethod
     def from_env(
@@ -54,6 +61,7 @@ class AgentConfig:
         base_url: str | None = None,
         api_key: str | None = None,
         max_steps: int = 18,
+        task_mode: str = "edit",
     ) -> AgentConfig:
         selected_model = model or os.getenv("REPO_AGENT_MODEL")
         if not selected_model:
@@ -68,4 +76,5 @@ class AgentConfig:
             enable_ast_tools=enable_ast_tools,
             enable_context_retrieval=enable_context_retrieval,
             max_steps=max_steps,
+            task_mode=task_mode,
         )

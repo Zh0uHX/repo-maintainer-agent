@@ -106,6 +106,25 @@ class RepositoryToolsTests(unittest.TestCase):
         self.assertEqual(result["exit_code"], 0)
         self.assertEqual(result["executable"], sys.executable)
 
+    def test_symbol_cache_is_invalidated_by_edits(self):
+        first = self.tools.symbol_search("add")
+        self.assertEqual([item["name"] for item in first["matches"]], ["add"])
+        self.tools.edit_file("src/maths.py", "def add(a, b):", "def plus(a, b):")
+        self.assertEqual(self.tools.symbol_search("add")["matches"], [])
+        self.assertEqual(len(self.tools.symbol_search("plus")["matches"]), 1)
+
+    def test_repository_overview_counts_directories_without_secrets(self):
+        overview = self.tools.repository_overview()
+        self.assertEqual(overview["directories"], {"src": 1, "tests": 1})
+        self.assertNotIn(".env", overview["top_level_files"])
+
+    def test_localize_mode_exposes_no_write_tools(self):
+        config = AgentConfig(root=self.root, model="test", task_mode="localize")
+        tools = RepositoryTools(config, self.run_dir)
+        for name in ("edit_file", "write_file", "run_check", "diff"):
+            with self.assertRaises(ToolError):
+                tools.execute(name, {})
+
 
 if __name__ == "__main__":
     unittest.main()
