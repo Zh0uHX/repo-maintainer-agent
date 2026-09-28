@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ast
 import os
+import warnings
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -100,7 +101,10 @@ def inspect_python_file(path: Path, relative: str, max_file_bytes: int) -> dict[
         return {"path": relative, "symbols": [], "imports": [], "error": "file too large"}
     try:
         source = path.read_text(encoding="utf-8")
-        tree = ast.parse(source, filename=relative)
+        with warnings.catch_warnings():
+            # Invalid escape sequences in repository code only warn; keep them off stderr.
+            warnings.simplefilter("ignore", SyntaxWarning)
+            tree = ast.parse(source, filename=relative)
     except (OSError, UnicodeDecodeError, SyntaxError) as exc:
         return {"path": relative, "symbols": [], "imports": [], "error": str(exc)}
     visitor = _SymbolVisitor(relative)
