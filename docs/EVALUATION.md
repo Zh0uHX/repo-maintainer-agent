@@ -179,6 +179,19 @@ Known limitation: `retrieve_context` indexes at most 240 files in directory orde
 medium and large repositories it only sees an alphabetical prefix of the tree unless the Agent
 passes a narrower `glob`. Record this before comparing context-enabled and disabled conditions.
 
+### Model protocol recovery
+
+The first ten-case baseline lost 3 of 10 cases to protocol failures, not localization:
+
+- Nested `finish` replies missing their final `}`. Regenerating repeated the same mistake three
+  times, so the client now appends missing closers when the reply ends outside a string with
+  unclosed brackets (`closed_brackets` in metrics).
+- Whitespace-only replies in JSON mode, typically in the plan stage. The client resends the
+  original request and drops `response_format` after the first empty reply
+  (`json_mode_fallback` in the trace).
+
+Report both counters with any result so recovered cases are not mistaken for clean runs.
+
 ## Metrics
 
 - Task completion and per-family pass rate

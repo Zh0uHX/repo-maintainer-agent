@@ -9,6 +9,11 @@
 - Cached parsed Python symbols by mtime; replaced the plan-stage file listing with a
   directory-level repository overview.
 - Added remaining-step notices and elision of all but the newest six observation bodies.
+- Closed brackets that a model drops at the end of a nested reply locally instead of asking it to
+  regenerate; counted as `closed_brackets`.
+- Resent the original request after whitespace-only replies, without JSON mode after the first;
+  recorded as `json_mode_fallback`. Traces now keep the last unparseable reply and `finish_reason`.
+- Added per-result `summary` and `scripts/failure_report.py` for deterministic failure labels.
 
 ## 0.4.0
 
