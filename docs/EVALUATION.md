@@ -164,7 +164,10 @@ repository. `scripts/select_cases.py` is deterministic for a given `--seed`.
 | Localization | `localize`: Agent cannot edit and must finish with ranked `locations` | File Acc@1/3/5 and function recall@1/3/5 against locations parsed from the gold patch | No |
 | Resolution | `edit`: Agent edits normally; `--predictions` exports SWE-bench prediction JSONL | Official SWE-bench harness (`FAIL_TO_PASS` / `PASS_TO_PASS`) | Yes, outside this harness |
 
-A localization case passes when the Agent completes and the gold file is its top-ranked file.
+A localization case passes when the Agent completes and its top-ranked location names a gold
+function; cases whose gold patch touches no function fall back to the top-ranked file. The
+headline metric is `function_recall@1`. File Acc@1 saturated at 9/10 in the first real-repo
+baseline because every Lite patch edits a single file, so it no longer separates conditions.
 Gold functions are the innermost function or class enclosing each removed line, or the line
 preceding each insertion, at `base_commit`. An insertion placed between two top-level
 definitions is attributed to the preceding definition or, when it lands on a blank line between

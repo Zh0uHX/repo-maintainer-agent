@@ -89,6 +89,29 @@ class ComparisonTests(unittest.TestCase):
         self.assertIn("Context disabled", markdown)
         self.assertIn("Context retrieval calls", markdown)
 
+    def test_ast_guidance_is_a_valid_contrast_and_reports_localization(self):
+        def report(guidance, recall):
+            return {
+                "model": "m",
+                "provider_models": ["m"],
+                "ast_enabled": True,
+                "context_retrieval_enabled": True,
+                "ast_guidance": guidance,
+                "total": 1,
+                "localization": {"function_recall@1": recall, "file_acc@1": 1.0},
+                "results": [{"name": "case"}],
+            }
+
+        comparison = compare_reports(report(False, 0.4), report(True, 0.6))
+        self.assertTrue(comparison["comparison_valid"])
+        self.assertEqual(comparison["comparison_dimension"], "ast_guidance")
+        self.assertEqual(comparison["deltas"]["function_recall@1"], 0.2)
+        markdown = render_comparison_markdown(comparison)
+        self.assertIn("AST-guided prompt", markdown)
+        self.assertIn("| function_recall@1 | 40.0% | 60.0% | +20.0 pp |", markdown)
+        mixed = compare_reports(report(False, 0.4), {**report(True, 0.6), "ast_enabled": False})
+        self.assertFalse(mixed["comparison_valid"])
+
 
 if __name__ == "__main__":
     unittest.main()

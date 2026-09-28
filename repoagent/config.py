@@ -36,6 +36,7 @@ class AgentConfig:
     enable_ast_tools: bool = True
     enable_context_retrieval: bool = True
     task_mode: str = "edit"
+    ast_guidance: bool = False
     max_steps: int = 18
     max_changed_files: int = 12
     max_file_bytes: int = 512_000
@@ -62,6 +63,7 @@ class AgentConfig:
         api_key: str | None = None,
         max_steps: int = 18,
         task_mode: str = "edit",
+        ast_guidance: bool = False,
     ) -> AgentConfig:
         selected_model = model or os.getenv("REPO_AGENT_MODEL")
         if not selected_model:
@@ -77,4 +79,5 @@ class AgentConfig:
             enable_context_retrieval=enable_context_retrieval,
             max_steps=max_steps,
             task_mode=task_mode,
+            ast_guidance=ast_guidance,
         )

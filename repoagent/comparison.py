@@ -2,6 +2,16 @@ from __future__ import annotations
 
 from typing import Any
 
+LOCALIZATION_METRICS = ("function_recall@1", "function_recall@5", "file_acc@1")
+
+
+def _metric(report: dict[str, Any], name: str) -> float:
+    if name in LOCALIZATION_METRICS:
+        value = (report.get("localization") or {}).get(name)
+    else:
+        value = report.get(name)
+    return float(value or 0)
+
 
 def compare_reports(baseline: dict[str, Any], candidate: dict[str, Any]) -> dict[str, Any]:
     metrics = (
@@ -12,19 +22,17 @@ def compare_reports(baseline: dict[str, Any], candidate: dict[str, Any]) -> dict
         "ast_tool_calls",
         "context_retrieval_calls",
         "total_tokens",
+        *LOCALIZATION_METRICS,
     )
     deltas = {
-        name: round(float(candidate.get(name, 0)) - float(baseline.get(name, 0)), 4)
-        for name in metrics
+        name: round(_metric(candidate, name) - _metric(baseline, name), 4) for name in metrics
     }
     metric_values = {
         name: {
-            "baseline": float(baseline.get(name, 0)),
-            "candidate": float(candidate.get(name, 0)),
+            "baseline": _metric(baseline, name),
+            "candidate": _metric(candidate, name),
             "delta": deltas[name],
-            "relative_delta": _relative_delta(
-                float(baseline.get(name, 0)), float(candidate.get(name, 0))
-            ),
+            "relative_delta": _relative_delta(_metric(baseline, name), _metric(candidate, name)),
         }
         for name in metrics
     }
@@ -47,8 +55,11 @@ def compare_reports(baseline: dict[str, Any], candidate: dict[str, Any]) -> dict
     candidate_ast = candidate.get("ast_enabled")
     baseline_context = baseline.get("context_retrieval_enabled", False)
     candidate_context = candidate.get("context_retrieval_enabled", False)
+    baseline_guidance = bool(baseline.get("ast_guidance"))
+    candidate_guidance = bool(candidate.get("ast_guidance"))
     ast_condition_match = baseline_ast == candidate_ast
     context_retrieval_match = baseline_context == candidate_context
+    guidance_match = baseline_guidance == candidate_guidance
     baseline_case_names = [str(item.get("name")) for item in baseline.get("results", [])]
     candidate_case_names = [str(item.get("name")) for item in candidate.get("results", [])]
     case_names_match = (
@@ -56,18 +67,35 @@ def compare_reports(baseline: dict[str, Any], candidate: dict[str, Any]) -> dict
         and len(baseline_case_names) == int(baseline.get("total", 0))
         and len(candidate_case_names) == int(candidate.get("total", 0))
     )
-    ast_contrast_valid = baseline_ast is False and candidate_ast is True and context_retrieval_match
+    ast_contrast_valid = (
+        baseline_ast is False
+        and candidate_ast is True
+        and context_retrieval_match
+        and guidance_match
+    )
     context_contrast_valid = (
-        baseline_context is False and candidate_context is True and ast_condition_match
+        baseline_context is False
+        and candidate_context is True
+        and ast_condition_match
+        and guidance_match
+    )
+    guidance_contrast_valid = (
+        not baseline_guidance
+        and candidate_guidance
+        and candidate_ast is True
+        and ast_condition_match
+        and context_retrieval_match
     )
     comparison_dimension = (
         "ast"
         if ast_contrast_valid
         else "context_retrieval"
         if context_contrast_valid
+        else "ast_guidance"
+        if guidance_contrast_valid
         else "invalid"
     )
-    tool_condition_valid = ast_contrast_valid or context_contrast_valid
+    tool_condition_valid = ast_contrast_valid or context_contrast_valid or guidance_contrast_valid
     comparison_valid = (
         configured_model_match
         and provider_model_match
@@ -105,18 +133,21 @@ def compare_reports(baseline: dict[str, Any], candidate: dict[str, Any]) -> dict
         "ast_contrast_valid": ast_contrast_valid,
         "context_retrieval_match": context_retrieval_match,
         "context_contrast_valid": context_contrast_valid,
+        "guidance_contrast_valid": guidance_contrast_valid,
         "comparison_dimension": comparison_dimension,
         "comparison_valid": comparison_valid,
         "baseline": {
             "model": baseline.get("model"),
             "ast_enabled": baseline_ast,
             "context_retrieval_enabled": baseline_context,
+            "ast_guidance": baseline_guidance,
             "total": baseline.get("total", 0),
         },
         "candidate": {
             "model": candidate.get("model"),
             "ast_enabled": candidate_ast,
             "context_retrieval_enabled": candidate_context,
+            "ast_guidance": candidate_guidance,
             "total": candidate.get("total", 0),
         },
         "deltas": deltas,
@@ -146,6 +177,8 @@ def render_comparison_markdown(comparison: dict[str, Any]) -> str:
         f"- Candidate AST: {candidate.get('ast_enabled')}",
         f"- Baseline context retrieval: {baseline.get('context_retrieval_enabled')}",
         f"- Candidate context retrieval: {candidate.get('context_retrieval_enabled')}",
+        f"- Baseline AST guidance: {baseline.get('ast_guidance')}",
+        f"- Candidate AST guidance: {candidate.get('ast_guidance')}",
         f"- Cases: {baseline.get('total')} → {candidate.get('total')}",
         "",
         "## Aggregate results",
@@ -153,6 +186,11 @@ def render_comparison_markdown(comparison: dict[str, Any]) -> str:
         f"| Metric | {baseline_label} | {candidate_label} | Observed change |",
         "|---|---:|---:|---:|",
         _metric_row("Pass rate", comparison["metrics"]["pass_rate"], percentage=True),
+        *(
+            _metric_row(name, comparison["metrics"][name], percentage=True)
+            for name in LOCALIZATION_METRICS
+            if comparison["metrics"][name]["baseline"] or comparison["metrics"][name]["candidate"]
+        ),
         _metric_row("Average steps", comparison["metrics"]["average_steps"], digits=2),
         _metric_row("Average tool calls", comparison["metrics"]["average_tool_calls"], digits=2),
         _metric_row("Tool errors", comparison["metrics"]["tool_errors"]),
@@ -231,4 +269,6 @@ def _condition_labels(dimension: str) -> tuple[str, str]:
         return "String baseline", "AST candidate"
     if dimension == "context_retrieval":
         return "Context disabled", "Context enabled"
+    if dimension == "ast_guidance":
+        return "Default prompt", "AST-guided prompt"
     return "Baseline", "Candidate"

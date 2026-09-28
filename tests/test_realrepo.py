@@ -6,8 +6,9 @@ from pathlib import Path
 from unittest import mock
 
 from repoagent import realrepo
+from repoagent.agent import action_guide
 from repoagent.config import AgentConfig
-from repoagent.evals import evaluate_case, export_predictions
+from repoagent.evals import evaluate_case, export_predictions, localization_passed
 from repoagent.llm import ScriptedClient
 from repoagent.metrics import aggregate_results
 
@@ -79,6 +80,21 @@ class PatchParsingTests(unittest.TestCase):
         self.assertEqual(scores["function_recall@1"], 0.0)
         self.assertEqual(scores["function_recall@3"], 0.5)
         self.assertEqual(scores["predicted_files"], ["pkg/api.py", "pkg/sessions.py"])
+
+
+class HeadlineMetricTests(unittest.TestCase):
+    def test_pass_requires_top1_function_unless_gold_has_none(self):
+        self.assertTrue(localization_passed({"file_acc@1": True, "function_recall@1": 0.5}))
+        self.assertFalse(localization_passed({"file_acc@1": True, "function_recall@1": 0.0}))
+        self.assertTrue(localization_passed({"file_acc@1": True, "function_recall@1": None}))
+        self.assertFalse(localization_passed({"file_acc@1": False, "function_recall@1": None}))
+
+    def test_ast_guidance_only_applies_to_localization_with_ast_tools(self):
+        marker = "Localization workflow"
+        self.assertIn(marker, action_guide(True, True, "localize", True))
+        self.assertNotIn(marker, action_guide(True, True, "localize", False))
+        self.assertNotIn(marker, action_guide(False, True, "localize", True))
+        self.assertNotIn(marker, action_guide(True, True, "edit", True))
 
 
 class RealRepositoryHarnessTests(unittest.TestCase):

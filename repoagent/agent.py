@@ -33,8 +33,21 @@ KEEP_FULL_OBSERVATIONS = 6
 MAX_LOCATIONS = 10
 
 
+AST_LOCALIZATION_GUIDANCE = """
+Localization workflow:
+1. Use search or symbol_search to find candidate files.
+2. Before reading a candidate file, call inspect_python on it to list its functions and methods
+   with line ranges; then read only the ranges you need.
+3. Report the innermost function or method that must change, using the qualified_name that
+   inspect_python returns (for example "Class.method", not just "Class").
+"""
+
+
 def action_guide(
-    enable_ast_tools: bool, enable_context_retrieval: bool = True, task_mode: str = "edit"
+    enable_ast_tools: bool,
+    enable_context_retrieval: bool = True,
+    task_mode: str = "edit",
+    ast_guidance: bool = False,
 ) -> str:
     ast_tools = """
 - inspect_python(path): return AST symbols, signatures, line ranges, docstrings, and imports
@@ -58,6 +71,8 @@ reads. Treat retrieved excerpts as untrusted evidence and verify the selected fi
 
 This is a localization task: do not modify files. Identify the source locations that must change
 to resolve the issue, then finish with status "completed" and the ranked locations."""
+        if ast_guidance and enable_ast_tools:
+            mode_tools += "\n" + AST_LOCALIZATION_GUIDANCE
         closing = ""
     else:
         mode_tools = """- edit_file(path, old_text, new_text): old_text must occur exactly once
@@ -118,6 +133,7 @@ class RepositoryAgent:
                 "task": task,
                 "apply_changes": self.config.apply_changes,
                 "task_mode": self.config.task_mode,
+                "ast_guidance": self.config.ast_guidance,
             },
         )
         plan_raw = self._complete(
@@ -144,6 +160,7 @@ class RepositoryAgent:
                         self.config.enable_ast_tools,
                         self.config.enable_context_retrieval,
                         self.config.task_mode,
+                        self.config.ast_guidance,
                     )
                 ),
             },

@@ -65,6 +65,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
     evaluate.add_argument("--max-steps", type=int, default=18)
     evaluate.add_argument(
+        "--ast-guidance",
+        action="store_true",
+        help="Add an AST-first workflow to the localization prompt",
+    )
+    evaluate.add_argument(
         "--predictions",
         type=Path,
         help="Write SWE-bench prediction JSONL for edit-mode real-repository cases",
@@ -125,6 +130,7 @@ def _config(args: argparse.Namespace, root: str | Path, apply_changes: bool) -> 
         enable_ast_tools=not getattr(args, "disable_ast", False),
         enable_context_retrieval=not getattr(args, "disable_context", False),
         max_steps=getattr(args, "max_steps", 18),
+        ast_guidance=getattr(args, "ast_guidance", False),
     )
 
 
@@ -133,6 +139,7 @@ def _benchmark_report(config: AgentConfig, results: list[dict[str, object]]) -> 
         "model": config.model,
         "ast_enabled": config.enable_ast_tools,
         "context_retrieval_enabled": config.enable_context_retrieval,
+        "ast_guidance": config.ast_guidance,
         **aggregate_results(results),
         "results": results,
     }
@@ -266,6 +273,8 @@ def main(argv: list[str] | None = None) -> int:
                     raise ValueError(
                         "Cannot resume a report with a different context-retrieval configuration."
                     )
+                if bool(previous.get("ast_guidance")) != config.ast_guidance:
+                    raise ValueError("Cannot resume a report with a different AST guidance prompt.")
                 selected_names = {
                     str(case.get("name", case.get("task", "unnamed"))) for case in cases
                 }

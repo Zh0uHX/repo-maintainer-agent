@@ -36,6 +36,8 @@ def merge_benchmark_reports(base: dict[str, Any], update: dict[str, Any]) -> dic
         "context_retrieval_enabled", False
     ):
         raise ValueError("Cannot merge reports with different context-retrieval configurations.")
+    if bool(base.get("ast_guidance")) != bool(update.get("ast_guidance")):
+        raise ValueError("Cannot merge reports with different AST guidance prompts.")
     replacements = {item["name"]: item for item in update.get("results", [])}
     merged_results = [replacements.pop(item["name"], item) for item in base.get("results", [])]
     merged_results.extend(replacements.values())
@@ -43,6 +45,7 @@ def merge_benchmark_reports(base: dict[str, Any], update: dict[str, Any]) -> dic
         "model": base.get("model"),
         "ast_enabled": base.get("ast_enabled"),
         "context_retrieval_enabled": base.get("context_retrieval_enabled", False),
+        "ast_guidance": bool(base.get("ast_guidance")),
         **aggregate_results(merged_results),
         "results": merged_results,
     }
@@ -96,7 +99,7 @@ def _evaluate_case_in_root(
     localization = None
     if mode == "localize":
         localization = score_localization(result.locations, case.get("gold", {}))
-        assertions.append({"type": "file_acc@1", "passed": localization["file_acc@1"]})
+        assertions.append({"type": "top1_location", "passed": localization_passed(localization)})
     for relative, expected in case.get("contains", {}).items():
         target = root / relative
         actual = target.read_text(encoding="utf-8") if target.exists() else ""
@@ -268,8 +271,9 @@ def render_markdown_report(report: dict[str, Any]) -> str:
         "# RepoAgent Benchmark Report",
         "",
         (
-            "> Generated from executable JSONL cases. A passing case requires both Agent completion "
-            "and all deterministic file assertions to pass."
+            "> Generated from executable JSONL cases. A passing case requires Agent completion and "
+            "all deterministic assertions; a localization case passes when its top-ranked "
+            "location names a gold function."
         ),
         "",
         "## Summary",
@@ -281,6 +285,7 @@ def render_markdown_report(report: dict[str, Any]) -> str:
             "- Context retrieval: "
             f"{'enabled' if report.get('context_retrieval_enabled', False) else 'disabled'}"
         ),
+        f"- AST guidance prompt: {'on' if report.get('ast_guidance') else 'off'}",
         f"- Cases: {report.get('total', 0)}",
         f"- Passed: {report.get('passed', 0)}",
         f"- Pass rate: {float(report.get('pass_rate', 0)):.1%}",
@@ -341,13 +346,27 @@ def render_markdown_report(report: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def localization_passed(scores: dict[str, Any]) -> bool:
+    """Headline rule: the top-ranked location names a gold function.
+
+    File-level accuracy saturates on SWE-bench Lite (every gold patch edits one file), so it only
+    decides cases whose gold patch touches no function or class.
+    """
+    recall = scores.get("function_recall@1")
+    return bool(scores.get("file_acc@1")) if recall is None else recall > 0
+
+
 def _localization_summary_lines(summary: Any) -> list[str]:
     if not isinstance(summary, dict):
         return []
     lines = ["", f"### Localization (n={summary['cases']})", ""]
-    for key, value in summary.items():
-        if key != "cases" and value is not None:
-            lines.append(f"- {key}: {float(value):.1%}")
+    ordered = sorted(
+        (key for key in summary if key != "cases"),
+        key=lambda key: (not key.startswith("function"), key),
+    )
+    for key in ordered:
+        if summary[key] is not None:
+            lines.append(f"- {key}: {float(summary[key]):.1%}")
     return lines
 
 

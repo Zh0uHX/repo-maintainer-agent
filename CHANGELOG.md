@@ -14,6 +14,10 @@
 - Resent the original request after whitespace-only replies, without JSON mode after the first;
   recorded as `json_mode_fallback`. Traces now keep the last unparseable reply and `finish_reason`.
 - Added per-result `summary` and `scripts/failure_report.py` for deterministic failure labels.
+- Made a top-1 gold function hit the localization pass rule and `function_recall@1` the headline
+  metric; file Acc@k is secondary because Lite patches always edit a single file.
+- Added `--ast-guidance`, an AST-first localization workflow in the prompt, recorded in reports,
+  enforced on resume and merge, and supported by `compare` as its own dimension.
 
 ## 0.4.0
 
