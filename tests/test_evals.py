@@ -1,3 +1,4 @@
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -109,6 +110,59 @@ class EvaluationTests(unittest.TestCase):
             self.assertEqual(result["benchmark_checks"][0]["exit_code"], 0)
             self.assertTrue(all(item["passed"] for item in result["assertions"]))
             self.assertTrue(result["mutation_checks"][0]["killed"])
+
+    def test_passing_case_preserves_full_trace_when_artifacts_requested(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            artifacts = root / "artifacts"
+            config = AgentConfig(root=root, model="scripted")
+            client = ScriptedClient(
+                [
+                    {"goal": "Fix value", "steps": ["read", "edit"], "risks": [], "checks": []},
+                    {
+                        "thought_summary": "Inspect source.",
+                        "action": {"name": "read_file", "args": {"path": "app.py"}},
+                    },
+                    {
+                        "thought_summary": "Fix source.",
+                        "action": {
+                            "name": "edit_file",
+                            "args": {
+                                "path": "app.py",
+                                "old_text": "VALUE = 1",
+                                "new_text": "VALUE = 2",
+                            },
+                        },
+                    },
+                    {
+                        "thought_summary": "Done.",
+                        "action": {
+                            "name": "finish",
+                            "args": {"status": "completed", "summary": "Fixed."},
+                        },
+                    },
+                ]
+            )
+            case = {
+                "name": "passing-case",
+                "task": "Set VALUE to 2.",
+                "files": {"app.py": "VALUE = 1\n"},
+                "contains": {"app.py": ["VALUE = 2"]},
+                "allowed_changed_files": ["app.py"],
+            }
+
+            result = evaluate_case(case, config, client, artifacts)
+
+            self.assertTrue(result["passed"])
+            destination = artifacts / "passing-case"
+            traces = list(destination.glob(".repoagent/runs/*/trace.jsonl"))
+            self.assertEqual(len(traces), 1)
+            lines = [line for line in traces[0].read_text(encoding="utf-8").splitlines() if line.strip()]
+            self.assertGreater(len(lines), 0)
+            events = [json.loads(line)["event"] for line in lines]
+            self.assertIn("run_started", events)
+            self.assertIn("finish", events)
+            self.assertEqual(result["metrics"]["completed"], True)
 
 
 if __name__ == "__main__":

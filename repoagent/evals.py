@@ -134,7 +134,7 @@ def _evaluate_case_in_root(
         mutation_checks.append({"path": relative, "check": check, "killed": killed})
         assertions.append({"type": "mutation_killed", "path": relative, "passed": killed})
     passed = result.status == "completed" and all(item["passed"] for item in assertions)
-    if artifacts_dir is not None and not passed:
+    if artifacts_dir is not None:
         _preserve_artifact(root, artifacts_dir, case)
     return {
         "name": case.get("name", case["task"]),
