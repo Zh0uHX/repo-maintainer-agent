@@ -75,6 +75,28 @@ class ParseJsonTests(unittest.TestCase):
         self.assertEqual(client.last_metadata["request_attempts"], 2)
         self.assertEqual(client.last_metadata["parse_retries"], 1)
         self.assertEqual(client.last_metadata["usage"]["total_tokens"], 30)
+        self.assertNotIn("invalid_content", client.last_metadata)
+
+    def test_exhausted_repairs_keep_the_last_invalid_reply(self):
+        malformed = '{"thought_summary":"x" "action":{}}'
+        response = {
+            "model": "provider-model",
+            "usage": {"prompt_tokens": 1, "completion_tokens": 1, "total_tokens": 2},
+            "choices": [{"message": {"content": malformed}}],
+        }
+        client = OpenAICompatibleClient(
+            model="configured-model", api_key=None, base_url="https://example.test/v1", retries=1
+        )
+        with (
+            patch(
+                "urllib.request.urlopen",
+                side_effect=[FakeResponse(response), FakeResponse(response)],
+            ),
+            self.assertRaises(RuntimeError),
+        ):
+            client.complete([{"role": "user", "content": "Return an action."}])
+        self.assertEqual(client.last_metadata["parse_retries"], 2)
+        self.assertEqual(client.last_metadata["invalid_content"], malformed)
 
 
 if __name__ == "__main__":

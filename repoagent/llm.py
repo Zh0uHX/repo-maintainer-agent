@@ -104,7 +104,12 @@ class OpenAICompatibleClient:
                     parse_retries += 1
                     retry_messages = _json_repair_messages(messages, content, exc)
                 self.last_metadata = _request_metadata(
-                    provider_model, usage, attempt + 1, parse_retries, error=exc
+                    provider_model,
+                    usage,
+                    attempt + 1,
+                    parse_retries,
+                    error=exc,
+                    invalid_content=content,
                 )
                 if attempt < self.retries and content is None:
                     time.sleep(2**attempt)
@@ -152,6 +157,7 @@ def _request_metadata(
     parse_retries: int,
     *,
     error: Exception | None = None,
+    invalid_content: str | None = None,
 ) -> dict[str, Any]:
     metadata: dict[str, Any] = {
         "model": model,
@@ -161,6 +167,9 @@ def _request_metadata(
     }
     if error is not None:
         metadata["error"] = f"{type(error).__name__}: {error}"
+    if invalid_content is not None:
+        # Keep the unparseable reply so protocol failures can be diagnosed from the trace.
+        metadata["invalid_content"] = invalid_content[:8_000]
     return metadata
 
 
