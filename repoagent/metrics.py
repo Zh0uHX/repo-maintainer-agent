@@ -18,6 +18,7 @@ def summarize_trace(
     model_errors = 0
     request_attempts = 0
     parse_retries = 0
+    closed_brackets = 0
     model_latency_ms = 0
     tool_errors = 0
     total_tokens = 0
@@ -41,6 +42,7 @@ def summarize_trace(
             provider_model = metadata.get("model")
             request_attempts += _nonnegative_integer(metadata.get("request_attempts"), 1)
             parse_retries += _nonnegative_integer(metadata.get("parse_retries"), 0)
+            closed_brackets += _nonnegative_integer(metadata.get("closed_brackets"), 0)
             if isinstance(provider_model, str) and provider_model:
                 provider_models.add(provider_model)
             input_tokens += _integer_usage(usage, "prompt_tokens", "input_tokens")
@@ -70,6 +72,7 @@ def summarize_trace(
         "model_errors": model_errors,
         "request_attempts": request_attempts,
         "parse_retries": parse_retries,
+        "closed_brackets": closed_brackets,
         "model_latency_ms": model_latency_ms,
         "tool_calls": sum(tool_counts.values()),
         "tool_errors": tool_errors,
@@ -111,6 +114,7 @@ def aggregate_results(results: list[dict[str, Any]]) -> dict[str, Any]:
         "model_errors": sum(int(item.get("model_errors", 0)) for item in metrics),
         "request_attempts": sum(int(item.get("request_attempts", 0)) for item in metrics),
         "parse_retries": sum(int(item.get("parse_retries", 0)) for item in metrics),
+        "closed_brackets": sum(int(item.get("closed_brackets", 0)) for item in metrics),
         "total_tokens": sum(int(item.get("total_tokens", 0)) for item in metrics),
         "tool_counts": dict(sorted(tool_counts.items())),
         "ast_tool_calls": tool_counts["inspect_python"] + tool_counts["symbol_search"],

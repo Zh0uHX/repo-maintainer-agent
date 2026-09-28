@@ -2,7 +2,7 @@ import json
 import unittest
 from unittest.mock import patch
 
-from repoagent.llm import OpenAICompatibleClient, parse_json_object
+from repoagent.llm import OpenAICompatibleClient, parse_json_object, parse_json_object_detail
 
 
 class FakeResponse:
@@ -28,6 +28,19 @@ class ParseJsonTests(unittest.TestCase):
 
     def test_embedded_json(self):
         self.assertEqual(parse_json_object('Result: {"value": 3} done'), {"value": 3})
+
+    def test_closes_brackets_dropped_at_the_end(self):
+        truncated = '{"action": {"name": "finish", "args": {"locations": [{"path": "a.py"}]}}'
+        value, closed = parse_json_object_detail(truncated)
+        self.assertEqual(closed, 1)
+        self.assertEqual(value["action"]["args"]["locations"], [{"path": "a.py"}])
+
+    def test_does_not_close_inside_string_or_mismatched_brackets(self):
+        with self.assertRaises(ValueError):
+            parse_json_object_detail('{"summary": "unterminated')
+        with self.assertRaises(ValueError):
+            parse_json_object_detail('{"items": [1, 2}')
+        self.assertEqual(parse_json_object_detail('{"s": "a \\" {"}')[1], 0)
 
     def test_rejects_array(self):
         with self.assertRaises(TypeError):
@@ -97,6 +110,32 @@ class ParseJsonTests(unittest.TestCase):
             client.complete([{"role": "user", "content": "Return an action."}])
         self.assertEqual(client.last_metadata["parse_retries"], 2)
         self.assertEqual(client.last_metadata["invalid_content"], malformed)
+
+    def test_empty_reply_resends_original_request(self):
+        def reply(content):
+            return FakeResponse(
+                {
+                    "usage": {"prompt_tokens": 1, "completion_tokens": 1, "total_tokens": 2},
+                    "choices": [{"message": {"content": content}}],
+                }
+            )
+
+        client = OpenAICompatibleClient(
+            model="configured-model", api_key=None, base_url="https://example.test/v1", retries=1
+        )
+        original = [{"role": "user", "content": "Return an action."}]
+        with (
+            patch("urllib.request.urlopen", side_effect=[reply("   "), reply('{"ok": 1}')]) as call,
+            patch("time.sleep"),
+        ):
+            self.assertEqual(client.complete(original), {"ok": 1})
+        first, second = (json.loads(item.args[0].data) for item in call.call_args_list)
+        self.assertEqual(second["messages"], original)
+        self.assertIn("response_format", first)
+        self.assertNotIn("response_format", second)
+        self.assertTrue(client.last_metadata["json_mode_fallback"])
+        self.assertEqual(client.last_metadata["parse_retries"], 0)
+        self.assertEqual(client.last_metadata["request_attempts"], 2)
 
 
 if __name__ == "__main__":

@@ -13,6 +13,16 @@ class ModelClient(Protocol):
 
 
 def parse_json_object(content: str) -> dict[str, Any]:
+    return parse_json_object_detail(content)[0]
+
+
+def parse_json_object_detail(content: str) -> tuple[dict[str, Any], int]:
+    """Parse a model reply and return it with the number of closing brackets appended.
+
+    Models occasionally drop the final ``}`` of deeply nested replies and repeat the mistake when
+    asked to regenerate. When the text ends outside a string with unclosed brackets, appending the
+    missing closers is unambiguous, so it is done locally and reported to the caller.
+    """
     text = content.strip()
     if text.startswith("```"):
         lines = text.splitlines()
@@ -20,16 +30,48 @@ def parse_json_object(content: str) -> dict[str, Any]:
             text = "\n".join(lines[1:-1])
             if text.lstrip().startswith("json"):
                 text = text.lstrip()[4:].lstrip()
+    closed = 0
     try:
         value = json.loads(text)
     except json.JSONDecodeError:
-        start, end = text.find("{"), text.rfind("}")
-        if start < 0 or end <= start:
+        start = text.find("{")
+        if start < 0:
             raise ValueError("Model response did not contain a JSON object.") from None
-        value = json.loads(text[start : end + 1])
+        closers = _missing_closers(text[start:])
+        if closers:
+            value = json.loads(text[start:] + closers)
+            closed = len(closers)
+        else:
+            end = text.rfind("}")
+            if end <= start:
+                raise ValueError("Model response did not contain a JSON object.") from None
+            value = json.loads(text[start : end + 1])
     if not isinstance(value, dict):
         raise TypeError("Model response must be a JSON object.")
-    return value
+    return value, closed
+
+
+def _missing_closers(text: str) -> str:
+    """Closers for brackets still open at the end of ``text``; empty if ending inside a string."""
+    stack: list[str] = []
+    in_string = escaped = False
+    for char in text:
+        if in_string:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == '"':
+                in_string = False
+        elif char == '"':
+            in_string = True
+        elif char in "{[":
+            stack.append("}" if char == "{" else "]")
+        elif char in "}]" and (not stack or stack.pop() != char):
+            return ""
+    if in_string:
+        return ""
+    return "".join(reversed(stack))
 
 
 class OpenAICompatibleClient:
@@ -63,33 +105,44 @@ class OpenAICompatibleClient:
         usage = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
         provider_model = self.model
         parse_retries = 0
+        json_mode = True
         for attempt in range(self.retries + 1):
             content: str | None = None
+            finish_reason: str | None = None
             try:
-                payload = json.dumps(
-                    {
-                        "model": self.model,
-                        "messages": retry_messages,
-                        "temperature": 0,
-                        "max_tokens": self.max_tokens,
-                        "response_format": {"type": "json_object"},
-                    }
-                ).encode()
+                body: dict[str, Any] = {
+                    "model": self.model,
+                    "messages": retry_messages,
+                    "temperature": 0,
+                    "max_tokens": self.max_tokens,
+                }
+                if json_mode:
+                    body["response_format"] = {"type": "json_object"}
+                payload = json.dumps(body).encode()
                 request = urllib.request.Request(
                     self.url, data=payload, headers=headers, method="POST"
                 )
                 with urllib.request.urlopen(request, timeout=self.timeout_seconds) as response:
                     result = json.loads(response.read().decode("utf-8"))
+                finish_reason = result["choices"][0].get("finish_reason")
                 raw_content = result["choices"][0]["message"]["content"]
                 if not isinstance(raw_content, str):
                     raise TypeError("Model message content must be a string.")
                 content = raw_content
                 provider_model = str(result.get("model", self.model))
                 _accumulate_usage(usage, result.get("usage", {}))
-                parsed = parse_json_object(content)
+                if not content.strip():
+                    raise ValueError("Model returned an empty message.")
+                parsed, closed = parse_json_object_detail(content)
                 self.last_metadata = _request_metadata(
                     provider_model, usage, attempt + 1, parse_retries
                 )
+                if closed:
+                    self.last_metadata["closed_brackets"] = closed
+                if not json_mode:
+                    self.last_metadata["json_mode_fallback"] = True
+                if finish_reason:
+                    self.last_metadata["finish_reason"] = finish_reason
                 return parsed
             except (
                 urllib.error.URLError,
@@ -100,9 +153,15 @@ class OpenAICompatibleClient:
                 ValueError,
             ) as exc:
                 last_error = exc
-                if content is not None:
+                empty_reply = content is not None and not content.strip()
+                if content is not None and not empty_reply:
                     parse_retries += 1
                     retry_messages = _json_repair_messages(messages, content, exc)
+                elif empty_reply:
+                    # Nothing to repair. JSON mode can yield whitespace-only replies, so resend
+                    # the original request with the format constraint left to the prompt.
+                    retry_messages = messages
+                    json_mode = False
                 self.last_metadata = _request_metadata(
                     provider_model,
                     usage,
@@ -111,7 +170,11 @@ class OpenAICompatibleClient:
                     error=exc,
                     invalid_content=content,
                 )
-                if attempt < self.retries and content is None:
+                if not json_mode:
+                    self.last_metadata["json_mode_fallback"] = True
+                if finish_reason:
+                    self.last_metadata["finish_reason"] = finish_reason
+                if attempt < self.retries and (content is None or empty_reply):
                     time.sleep(2**attempt)
         raise RuntimeError(f"Model request failed after retries: {last_error}") from last_error
 
