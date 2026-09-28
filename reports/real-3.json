@@ -1,0 +1,291 @@
+{
+  "model": "deepseek-flash",
+  "ast_enabled": true,
+  "context_retrieval_enabled": true,
+  "total": 3,
+  "passed": 3,
+  "pass_rate": 1.0,
+  "average_steps": 11.0,
+  "average_tool_calls": 10.0,
+  "tool_errors": 0,
+  "model_errors": 0,
+  "request_attempts": 40,
+  "parse_retries": 4,
+  "total_tokens": 209764,
+  "tool_counts": {
+    "inspect_python": 2,
+    "list_files": 4,
+    "read_file": 12,
+    "search": 10,
+    "symbol_search": 2
+  },
+  "ast_tool_calls": 4,
+  "context_retrieval_calls": 0,
+  "provider_models": [
+    "deepseek-flash"
+  ],
+  "families": {
+    "large": {
+      "total": 1,
+      "passed": 1,
+      "pass_rate": 1.0
+    },
+    "medium": {
+      "total": 1,
+      "passed": 1,
+      "pass_rate": 1.0
+    },
+    "small": {
+      "total": 1,
+      "passed": 1,
+      "pass_rate": 1.0
+    }
+  },
+  "localization": {
+    "cases": 3,
+    "file_acc@1": 1.0,
+    "file_acc@3": 1.0,
+    "file_acc@5": 1.0,
+    "function_recall@1": 0.6667,
+    "function_recall@3": 0.6667,
+    "function_recall@5": 0.6667
+  },
+  "results": [
+    {
+      "name": "pydata__xarray-4248",
+      "family": "small",
+      "instance_id": "pydata__xarray-4248",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.0,
+        "file_acc@3": true,
+        "function_recall@3": 0.0,
+        "file_acc@5": true,
+        "function_recall@5": 0.0,
+        "predicted_files": [
+          "xarray/core/formatting.py",
+          "xarray/tests/test_formatting.py",
+          "doc/whats-new.rst"
+        ]
+      },
+      "locations": [
+        {
+          "path": "xarray/core/formatting.py",
+          "symbol": "summarize_variable"
+        },
+        {
+          "path": "xarray/core/formatting.py",
+          "symbol": "_calculate_col_width"
+        },
+        {
+          "path": "xarray/core/formatting.py",
+          "symbol": "_get_col_items"
+        },
+        {
+          "path": "xarray/core/formatting.py",
+          "symbol": "dataset_repr"
+        },
+        {
+          "path": "xarray/core/formatting.py",
+          "symbol": "summarize_coord"
+        },
+        {
+          "path": "xarray/core/formatting.py",
+          "symbol": "_summarize_coord_multiindex"
+        },
+        {
+          "path": "xarray/core/formatting.py",
+          "symbol": "_summarize_coord_levels"
+        },
+        {
+          "path": "xarray/tests/test_formatting.py",
+          "symbol": "TestFormatting"
+        },
+        {
+          "path": "doc/whats-new.rst",
+          "symbol": ""
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "assertions": [
+        {
+          "type": "file_acc@1",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 13,
+        "model_calls": 14,
+        "model_errors": 0,
+        "request_attempts": 16,
+        "parse_retries": 2,
+        "model_latency_ms": 29877,
+        "tool_calls": 12,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 2,
+          "list_files": 2,
+          "read_file": 4,
+          "search": 4
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 84189,
+        "output_tokens": 4959,
+        "total_tokens": 89148,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "scikit-learn__scikit-learn-15535",
+      "family": "medium",
+      "instance_id": "scikit-learn__scikit-learn-15535",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "sklearn/metrics/cluster/_supervised.py",
+          "sklearn/metrics/cluster/tests/test_supervised.py",
+          "doc/whats_new/v0.22.rst"
+        ]
+      },
+      "locations": [
+        {
+          "path": "sklearn/metrics/cluster/_supervised.py",
+          "symbol": "check_clusterings"
+        },
+        {
+          "path": "sklearn/metrics/cluster/tests/test_supervised.py",
+          "symbol": ""
+        },
+        {
+          "path": "doc/whats_new/v0.22.rst",
+          "symbol": ""
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "assertions": [
+        {
+          "type": "file_acc@1",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 12,
+        "model_calls": 13,
+        "model_errors": 0,
+        "request_attempts": 14,
+        "parse_retries": 1,
+        "model_latency_ms": 24111,
+        "tool_calls": 11,
+        "tool_errors": 0,
+        "tool_counts": {
+          "list_files": 1,
+          "read_file": 5,
+          "search": 3,
+          "symbol_search": 2
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 83218,
+        "output_tokens": 3284,
+        "total_tokens": 86502,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "django__django-11001",
+      "family": "large",
+      "instance_id": "django__django-11001",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "django/db/models/sql/compiler.py",
+          "tests/ordering/tests.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "django/db/models/sql/compiler.py",
+          "symbol": "SQLCompiler.__init__"
+        },
+        {
+          "path": "django/db/models/sql/compiler.py",
+          "symbol": "SQLCompiler.get_order_by"
+        },
+        {
+          "path": "django/db/models/sql/compiler.py",
+          "symbol": "SQLCompiler.get_extra_select"
+        },
+        {
+          "path": "tests/ordering/tests.py",
+          "symbol": "OrderingTests"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "assertions": [
+        {
+          "type": "file_acc@1",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 8,
+        "model_calls": 9,
+        "model_errors": 0,
+        "request_attempts": 10,
+        "parse_retries": 1,
+        "model_latency_ms": 16216,
+        "tool_calls": 7,
+        "tool_errors": 0,
+        "tool_counts": {
+          "list_files": 1,
+          "read_file": 3,
+          "search": 3
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 31741,
+        "output_tokens": 2373,
+        "total_tokens": 34114,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    }
+  ]
+}
