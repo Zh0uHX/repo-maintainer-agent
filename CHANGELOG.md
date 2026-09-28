@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- Added real-repository evaluation: cached blob-less clones, `git archive` workspaces, and a
+  44-case SWE-bench Lite localization suite stratified by repository size.
+- Added `localize` task mode with ranked locations scored by file Acc@k and function recall@k.
+- Added SWE-bench prediction export for edit-mode real-repository cases.
+- Cached parsed Python symbols by mtime; replaced the plan-stage file listing with a
+  directory-level repository overview.
+- Added remaining-step notices and elision of all but the newest six observation bodies.
+
 ## 0.4.0
 
 - Added bounded repository context retrieval over paths, identifiers, AST symbols and code chunks.

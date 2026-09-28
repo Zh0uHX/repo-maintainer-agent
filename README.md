@@ -270,12 +270,11 @@ ruff check .
 pytest -q
 ```
 
-进一步的系统设计、安全边界和求职展示方法见：
+进一步的系统设计与安全边界见：
 
 - [架构说明](docs/ARCHITECTURE.md)
 - [安全模型](SECURITY.md)
 - [评测协议](docs/EVALUATION.md)
-- [作品集与面试指南](PORTFOLIO.md)
 
 ## 设计边界
 

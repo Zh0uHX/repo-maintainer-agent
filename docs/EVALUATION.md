@@ -128,6 +128,57 @@ repoagent compare reports/context-disabled.json reports/context-enabled.json \
 
 The comparison command accepts exactly one forward tool contrast at a time: AST disabled→enabled with context held constant, or context retrieval disabled→enabled with AST held constant. Model, provider model, exact case order and case count must also match.
 
+## Real-repository suite (SWE-bench Lite)
+
+Synthetic fixtures contain three to five small files, so there is nothing for symbol navigation
+to navigate. The real-repository suite replaces inline `files` with a pinned upstream tree:
+
+```json
+{"name": "psf__requests-2317", "instance_id": "psf__requests-2317", "family": "small",
+ "mode": "localize", "repo": "psf/requests", "base_commit": "091991be...",
+ "task": "<problem_statement>", "gold": {"files": [...], "functions": [...]},
+ "meta": {"python_files": 41, "hunks": 1}}
+```
+
+The harness keeps one bare, blob-less clone per repository in `~/.cache/repoagent-repos`
+(override with `REPOAGENT_REPO_CACHE`) and materializes each case with `git archive`, so the
+Agent never sees `.git` or any later history. Artifacts keep only `.repoagent/` run records.
+
+### Dataset facts that constrain the design
+
+Checked against all 300 SWE-bench Lite test instances:
+
+- Every gold patch edits exactly one file; hunk counts are 1 / 2 / 3 for 190 / 73 / 37 cases.
+- Repositories: django 114, sympy 77, matplotlib 23, scikit-learn 23, pytest 17, sphinx 16,
+  astropy 6, requests 6, pylint 6, xarray 5, seaborn 4, flask 3.
+
+Cross-file and test-writing task families therefore cannot be drawn from Lite. The suite is
+stratified by repository size instead (Python files at `base_commit`: small < 150,
+medium 150–800, large > 800), round-robin over hunk count, with at most eight cases per
+repository. `scripts/select_cases.py` is deterministic for a given `--seed`.
+
+### Two evaluation layers
+
+| Layer | Mode | Judge | Needs repo environment |
+|---|---|---|---|
+| Localization | `localize`: Agent cannot edit and must finish with ranked `locations` | File Acc@1/3/5 and function recall@1/3/5 against locations parsed from the gold patch | No |
+| Resolution | `edit`: Agent edits normally; `--predictions` exports SWE-bench prediction JSONL | Official SWE-bench harness (`FAIL_TO_PASS` / `PASS_TO_PASS`) | Yes, outside this harness |
+
+A localization case passes when the Agent completes and the gold file is its top-ranked file.
+Gold functions are the innermost function or class enclosing each removed line, or the line
+preceding each insertion, at `base_commit`. An insertion placed between two top-level
+definitions is attributed to the preceding definition or, when it lands on a blank line between
+definitions, to no symbol; such cases (2 of 44 in the default suite) are scored at file level
+only and report `function_recall@k` as `null`.
+
+Real-repository cases disable `run_check` by default because no environment is installed.
+Hidden tests and mutation checks apply only to fixture suites; do not describe localization
+results as test-verified.
+
+Known limitation: `retrieve_context` indexes at most 240 files in directory order, so on
+medium and large repositories it only sees an alphabetical prefix of the tree unless the Agent
+passes a narrower `glob`. Record this before comparing context-enabled and disabled conditions.
+
 ## Metrics
 
 - Task completion and per-family pass rate
