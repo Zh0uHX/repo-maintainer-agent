@@ -305,6 +305,13 @@ def main(argv: list[str] | None = None) -> int:
                 file=sys.stderr,
                 flush=True,
             )
+            if result.get("fatal"):
+                print(
+                    "repoagent: stopping: the provider rejected the request (billing or "
+                    "authentication); remaining cases were not run. Fix it, then use --resume.",
+                    file=sys.stderr,
+                )
+                break
             if result.get("status") == "error" and not args.continue_on_error:
                 print(f"repoagent: {result.get('error')}", file=sys.stderr)
                 break

@@ -7,6 +7,12 @@ import urllib.request
 from collections.abc import Iterable
 from typing import Any, Protocol
 
+FATAL_HTTP_STATUSES = {401, 402, 403}
+
+
+class ProviderFatalError(RuntimeError):
+    """Authentication or billing failure: retrying cannot succeed, so callers should stop."""
+
 
 class ModelClient(Protocol):
     def complete(self, messages: list[dict[str, str]]) -> dict[str, Any]: ...
@@ -153,6 +159,12 @@ class OpenAICompatibleClient:
                 ValueError,
             ) as exc:
                 last_error = exc
+                status = exc.code if isinstance(exc, urllib.error.HTTPError) else None
+                if status in FATAL_HTTP_STATUSES:
+                    self.last_metadata = _request_metadata(
+                        provider_model, usage, attempt + 1, parse_retries, error=exc
+                    )
+                    raise ProviderFatalError(f"Provider rejected the request: {exc}") from exc
                 empty_reply = content is not None and not content.strip()
                 if content is not None and not empty_reply:
                     parse_retries += 1
@@ -175,7 +187,10 @@ class OpenAICompatibleClient:
                 if finish_reason:
                     self.last_metadata["finish_reason"] = finish_reason
                 if attempt < self.retries and (content is None or empty_reply):
-                    time.sleep(2**attempt)
+                    # Rate limits and server errors need longer pauses than transient drops.
+                    time.sleep(
+                        10 * 3**attempt if status == 429 or (status or 0) >= 500 else 2**attempt
+                    )
         raise RuntimeError(f"Model request failed after retries: {last_error}") from last_error
 
 

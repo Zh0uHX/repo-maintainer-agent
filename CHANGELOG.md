@@ -16,6 +16,10 @@
 - Added per-result `summary` and `scripts/failure_report.py` for deterministic failure labels.
 - Made a top-1 gold function hit the localization pass rule and `function_recall@1` the headline
   metric; file Acc@k is secondary because Lite patches always edit a single file.
+- Repaired off-schema plans once, then fell back to a minimal plan (`plan_fallback` in the trace).
+- Stopped immediately on HTTP 401/402/403 without retries and ended the whole eval run, even with
+  `--continue-on-error`; rate limits and server errors now back off 10 s and 30 s.
+- Added `scripts/aggregate_runs.py` for repeated runs with a paired case bootstrap.
 - Added `--ast-guidance`, an AST-first localization workflow in the prompt, recorded in reports,
   enforced on resume and merge, and supported by `compare` as its own dimension.
 

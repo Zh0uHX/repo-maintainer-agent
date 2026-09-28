@@ -10,7 +10,7 @@ from typing import Any
 
 from .agent import RepositoryAgent
 from .config import AgentConfig
-from .llm import ModelClient
+from .llm import ModelClient, ProviderFatalError
 from .metrics import aggregate_results, summarize_trace
 from .realrepo import materialize, score_localization
 from .tools import RepositoryTools, ToolError
@@ -63,6 +63,7 @@ def evaluate_case(
             return _evaluate_case_in_root(case, config, client, artifacts_dir, root)
         except (OSError, RuntimeError, TypeError, ValueError, ToolError) as exc:
             result = _error_result(case, root, exc)
+            result["fatal"] = isinstance(exc, ProviderFatalError)
             if artifacts_dir is not None:
                 source = root / ".repoagent" if "repo" in case else root
                 destination = _preserve_artifact(source, artifacts_dir, case)

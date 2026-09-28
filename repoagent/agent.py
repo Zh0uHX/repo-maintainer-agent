@@ -144,7 +144,7 @@ class RepositoryAgent:
             ],
             "plan",
         )
-        plan = Plan.from_dict(plan_raw)
+        plan = self._validated_plan(trace_path, task, plan_request, plan_raw)
         self._trace(trace_path, "plan", asdict(plan))
 
         messages: list[dict[str, str]] = [
@@ -288,6 +288,40 @@ class RepositoryAgent:
             json.dumps(result.to_dict(), ensure_ascii=False, indent=2), encoding="utf-8"
         )
         return result
+
+    def _validated_plan(
+        self, trace_path: Path, task: str, plan_request: str, plan_raw: dict[str, Any]
+    ) -> Plan:
+        """Repair an off-schema plan once, then fall back to a minimal plan.
+
+        Models sometimes answer the plan request with a tool call such as {"command": "sed ..."}.
+        The plan only guides the action loop, so a bad plan must not abort the run.
+        """
+        try:
+            return Plan.from_dict(plan_raw)
+        except ValueError as exc:
+            first_error = str(exc)
+        repaired = self._complete(
+            trace_path,
+            [
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": plan_request},
+                {"role": "assistant", "content": json.dumps(plan_raw, ensure_ascii=False)},
+                {
+                    "role": "user",
+                    "content": (
+                        f"That is not a plan ({first_error}). Do not call tools yet. Return only "
+                        '{"goal":"...","steps":["..."],"risks":["..."],"checks":["..."]}.'
+                    ),
+                },
+            ],
+            "plan_repair",
+        )
+        try:
+            return Plan.from_dict(repaired)
+        except ValueError:
+            self._trace(trace_path, "plan_fallback", {"invalid_plan": repaired})
+            return Plan(goal=task[:500], steps=["Inspect the repository and complete the task."])
 
     def _complete(
         self,

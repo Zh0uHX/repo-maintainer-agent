@@ -1,8 +1,14 @@
 import json
 import unittest
+import urllib.error
 from unittest.mock import patch
 
-from repoagent.llm import OpenAICompatibleClient, parse_json_object, parse_json_object_detail
+from repoagent.llm import (
+    OpenAICompatibleClient,
+    ProviderFatalError,
+    parse_json_object,
+    parse_json_object_detail,
+)
 
 
 class FakeResponse:
@@ -136,6 +142,29 @@ class ParseJsonTests(unittest.TestCase):
         self.assertTrue(client.last_metadata["json_mode_fallback"])
         self.assertEqual(client.last_metadata["parse_retries"], 0)
         self.assertEqual(client.last_metadata["request_attempts"], 2)
+
+    def test_billing_error_is_fatal_and_not_retried(self):
+        error = urllib.error.HTTPError("https://example.test", 402, "Payment Required", {}, None)
+        client = OpenAICompatibleClient(
+            model="configured-model", api_key=None, base_url="https://example.test/v1", retries=2
+        )
+        with (
+            patch("urllib.request.urlopen", side_effect=error) as call,
+            patch("time.sleep"),
+            self.assertRaises(ProviderFatalError),
+        ):
+            client.complete([{"role": "user", "content": "x"}])
+        self.assertEqual(call.call_count, 1)
+
+    def test_rate_limit_backs_off_longer(self):
+        error = urllib.error.HTTPError("https://example.test", 429, "Too Many Requests", {}, None)
+        ok = FakeResponse({"choices": [{"message": {"content": '{"ok": 1}'}}]})
+        client = OpenAICompatibleClient(
+            model="configured-model", api_key=None, base_url="https://example.test/v1", retries=1
+        )
+        with patch("urllib.request.urlopen", side_effect=[error, ok]), patch("time.sleep") as sleep:
+            self.assertEqual(client.complete([{"role": "user", "content": "x"}]), {"ok": 1})
+        sleep.assert_called_once_with(10)
 
 
 if __name__ == "__main__":

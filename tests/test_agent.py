@@ -174,6 +174,33 @@ class AgentTests(unittest.TestCase):
             self.assertIn("Steps used: 7/8", observations[-1])
             self.assertIn("Only 1 step(s) remain", observations[-1])
 
+    def test_off_schema_plan_is_repaired_then_falls_back(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            finish = {
+                "thought_summary": "Done.",
+                "action": {"name": "finish", "args": {"status": "completed", "summary": "ok"}},
+            }
+            repaired = RecordingClient(
+                [
+                    {"command": "sed -n 1,5p app.py"},
+                    {"goal": "Inspect", "steps": ["Read"], "risks": [], "checks": []},
+                    finish,
+                ]
+            )
+            config = AgentConfig(root=root, model="scripted", max_steps=2)
+            result = RepositoryAgent(config, repaired).run("Inspect the app")
+            self.assertEqual(result.plan.goal, "Inspect")
+            self.assertIn("That is not a plan", repaired.calls[1][-1]["content"])
+
+            fallback = RecordingClient([{"pattern": "x"}, {"command": "ls"}, finish])
+            result = RepositoryAgent(config, fallback).run("Inspect the app")
+            self.assertEqual(result.status, "completed")
+            self.assertEqual(result.plan.goal, "Inspect the app")
+            lines = Path(result.trace_path).read_text().splitlines()
+            events = [json.loads(line)["event"] for line in lines]
+            self.assertIn("plan_fallback", events)
+
 
 class RecordingClient(ScriptedClient):
     def __init__(self, responses):
