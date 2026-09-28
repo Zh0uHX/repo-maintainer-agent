@@ -2,15 +2,17 @@
   "model": "deepseek-flash",
   "ast_enabled": true,
   "context_retrieval_enabled": true,
+  "ast_guidance": false,
   "total": 3,
-  "passed": 3,
-  "pass_rate": 1.0,
+  "passed": 2,
+  "pass_rate": 0.6667,
   "average_steps": 11.0,
   "average_tool_calls": 10.0,
   "tool_errors": 0,
   "model_errors": 0,
   "request_attempts": 40,
   "parse_retries": 4,
+  "closed_brackets": 0,
   "total_tokens": 209764,
   "tool_counts": {
     "inspect_python": 2,
@@ -37,8 +39,8 @@
     },
     "small": {
       "total": 1,
-      "passed": 1,
-      "pass_rate": 1.0
+      "passed": 0,
+      "pass_rate": 0.0
     }
   },
   "localization": {
@@ -106,12 +108,12 @@
           "symbol": ""
         }
       ],
-      "passed": true,
+      "passed": false,
       "status": "completed",
       "assertions": [
         {
-          "type": "file_acc@1",
-          "passed": true
+          "type": "top1_location",
+          "passed": false
         }
       ],
       "changed_files": [],
@@ -180,7 +182,7 @@
       "status": "completed",
       "assertions": [
         {
-          "type": "file_acc@1",
+          "type": "top1_location",
           "passed": true
         }
       ],
@@ -253,7 +255,7 @@
       "status": "completed",
       "assertions": [
         {
-          "type": "file_acc@1",
+          "type": "top1_location",
           "passed": true
         }
       ],

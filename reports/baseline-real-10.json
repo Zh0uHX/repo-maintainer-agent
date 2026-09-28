@@ -2,9 +2,10 @@
   "model": "deepseek-flash",
   "ast_enabled": true,
   "context_retrieval_enabled": true,
+  "ast_guidance": false,
   "total": 10,
-  "passed": 9,
-  "pass_rate": 0.9,
+  "passed": 6,
+  "pass_rate": 0.6,
   "average_steps": 11.7,
   "average_tool_calls": 10.7,
   "tool_errors": 0,
@@ -28,18 +29,18 @@
   "families": {
     "large": {
       "total": 4,
-      "passed": 3,
-      "pass_rate": 0.75
+      "passed": 2,
+      "pass_rate": 0.5
     },
     "medium": {
       "total": 3,
-      "passed": 3,
-      "pass_rate": 1.0
+      "passed": 2,
+      "pass_rate": 0.6667
     },
     "small": {
       "total": 3,
-      "passed": 3,
-      "pass_rate": 1.0
+      "passed": 2,
+      "pass_rate": 0.6667
     }
   },
   "localization": {
@@ -95,7 +96,7 @@
       "status": "completed",
       "assertions": [
         {
-          "type": "file_acc@1",
+          "type": "top1_location",
           "passed": true
         }
       ],
@@ -174,7 +175,7 @@
       "status": "completed",
       "assertions": [
         {
-          "type": "file_acc@1",
+          "type": "top1_location",
           "passed": true
         }
       ],
@@ -235,12 +236,12 @@
           "symbol": "TestPolyFit"
         }
       ],
-      "passed": true,
+      "passed": false,
       "status": "completed",
       "assertions": [
         {
-          "type": "file_acc@1",
-          "passed": true
+          "type": "top1_location",
+          "passed": false
         }
       ],
       "changed_files": [],
@@ -267,6 +268,98 @@
         "input_tokens": 18584,
         "output_tokens": 1432,
         "total_tokens": 20016,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "scikit-learn__scikit-learn-11040",
+      "family": "medium",
+      "instance_id": "scikit-learn__scikit-learn-11040",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "sklearn/neighbors/base.py",
+          "sklearn/neighbors/approximate.py",
+          "sklearn/neighbors/classification.py",
+          "sklearn/neighbors/tests/test_neighbors.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "sklearn/neighbors/base.py",
+          "symbol": "NeighborsBase.__init__"
+        },
+        {
+          "path": "sklearn/neighbors/base.py",
+          "symbol": "NeighborsBase._fit"
+        },
+        {
+          "path": "sklearn/neighbors/base.py",
+          "symbol": "KNeighborsMixin.kneighbors"
+        },
+        {
+          "path": "sklearn/neighbors/base.py",
+          "symbol": "KNeighborsMixin.kneighbors_graph"
+        },
+        {
+          "path": "sklearn/neighbors/base.py",
+          "symbol": "NeighborsBase"
+        },
+        {
+          "path": "sklearn/neighbors/approximate.py",
+          "symbol": "LSHForest.kneighbors"
+        },
+        {
+          "path": "sklearn/neighbors/classification.py",
+          "symbol": "KNeighborsClassifier.__init__"
+        },
+        {
+          "path": "sklearn/neighbors/tests/test_neighbors.py",
+          "symbol": ""
+        }
+      ],
+      "passed": false,
+      "status": "completed",
+      "summary": "n_neighbors is stored unvalidated in NeighborsBase.__init__ (line 110) and consumed downstream. Add integer validation there so NearestNeighbors(n_neighbors=3.) fails early with a helpful ValueError. Also extend the existing positivity check in _fit (lines 255-260) and validate the resolved n_neighbors in KNeighborsMixin.kneighbors (after line 328-329) and kneighbors_graph (after lines 467-468) so per-call overrides like kneighbors(X, n_neighbors=3.) are caught too. np.integer must be accepted; reject plain floats (including 3.0). Add regression tests in sklearn/neighbors/tests/test_neighbors.py covering constructor and kneighbors/kneighbors_graph with float n_neighbors and acceptance of int/np.int64.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": false
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 6,
+        "model_calls": 7,
+        "model_errors": 0,
+        "request_attempts": 10,
+        "parse_retries": 2,
+        "closed_brackets": 1,
+        "model_latency_ms": 15352,
+        "tool_calls": 5,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 1,
+          "read_file": 3,
+          "search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 41083,
+        "output_tokens": 2291,
+        "total_tokens": 43374,
         "provider_models": [
           "deepseek-flash"
         ]
@@ -324,7 +417,7 @@
       "status": "completed",
       "assertions": [
         {
-          "type": "file_acc@1",
+          "type": "top1_location",
           "passed": true
         }
       ],
@@ -400,7 +493,7 @@
       "status": "completed",
       "assertions": [
         {
-          "type": "file_acc@1",
+          "type": "top1_location",
           "passed": true
         }
       ],
@@ -482,12 +575,12 @@
           "symbol": ""
         }
       ],
-      "passed": true,
+      "passed": false,
       "status": "completed",
       "assertions": [
         {
-          "type": "file_acc@1",
-          "passed": true
+          "type": "top1_location",
+          "passed": false
         }
       ],
       "changed_files": [],
@@ -516,83 +609,6 @@
         "input_tokens": 75775,
         "output_tokens": 10987,
         "total_tokens": 86762,
-        "provider_models": [
-          "deepseek-flash"
-        ]
-      }
-    },
-    {
-      "name": "matplotlib__matplotlib-25442",
-      "family": "large",
-      "instance_id": "matplotlib__matplotlib-25442",
-      "localization": {
-        "file_acc@1": true,
-        "function_recall@1": 0.2,
-        "file_acc@3": true,
-        "function_recall@3": 0.2,
-        "file_acc@5": true,
-        "function_recall@5": 0.4,
-        "predicted_files": [
-          "lib/matplotlib/offsetbox.py",
-          "lib/matplotlib/tests/test_offsetbox.py"
-        ]
-      },
-      "locations": [
-        {
-          "path": "lib/matplotlib/offsetbox.py",
-          "symbol": "DraggableBase.disconnect"
-        },
-        {
-          "path": "lib/matplotlib/offsetbox.py",
-          "symbol": "DraggableBase._check_still_parented"
-        },
-        {
-          "path": "lib/matplotlib/offsetbox.py",
-          "symbol": "DraggableBase.canvas"
-        },
-        {
-          "path": "lib/matplotlib/offsetbox.py",
-          "symbol": "DraggableBase.on_release"
-        },
-        {
-          "path": "lib/matplotlib/tests/test_offsetbox.py",
-          "symbol": "test_disconnect_detached_ref_artist"
-        }
-      ],
-      "passed": true,
-      "status": "completed",
-      "assertions": [
-        {
-          "type": "file_acc@1",
-          "passed": true
-        }
-      ],
-      "changed_files": [],
-      "agent_checks": [],
-      "benchmark_checks": [],
-      "mutation_checks": [],
-      "metrics": {
-        "completed": true,
-        "steps": 11,
-        "model_calls": 12,
-        "model_errors": 0,
-        "request_attempts": 15,
-        "parse_retries": 3,
-        "model_latency_ms": 27886,
-        "tool_calls": 10,
-        "tool_errors": 0,
-        "tool_counts": {
-          "inspect_python": 1,
-          "list_files": 1,
-          "read_file": 3,
-          "search": 5
-        },
-        "changed_files": 0,
-        "checks_passed": 0,
-        "checks_failed": 0,
-        "input_tokens": 73645,
-        "output_tokens": 5034,
-        "total_tokens": 78679,
         "provider_models": [
           "deepseek-flash"
         ]
@@ -647,7 +663,7 @@
       "summary": "StaticFilesHandlerMixin defines only the synchronous get_response and no get_response_async. ASGIStaticFilesHandler.__call__ forwards matching requests to ASGIHandler.__call__, which awaits self.get_response_async inherited from BaseHandler; since the mixin's load_middleware is a no-op, self._middleware_chain is None and the await raises TypeError: 'NoneType' object is not callable. The fix is to add an async get_response_async to the mixin mirroring the sync get_response: serve via await sync_to_async(self.serve, thread_sensitive=True)(request) and return response_for_exception(request, e) on Http404 (the existing response_for_exception/Http404 imports already cover the sync branch). This requires importing asgiref.sync.sync_to_async in handlers.py. No existing tests exercise ASGIStaticFilesHandler, so a new tests/staticfiles_tests/test_handlers.py should cover a served static path, a fall-through path, and the DEBUG 404 branch.",
       "assertions": [
         {
-          "type": "file_acc@1",
+          "type": "top1_location",
           "passed": true
         }
       ],
@@ -684,63 +700,48 @@
       }
     },
     {
-      "name": "scikit-learn__scikit-learn-11040",
-      "family": "medium",
-      "instance_id": "scikit-learn__scikit-learn-11040",
+      "name": "matplotlib__matplotlib-25442",
+      "family": "large",
+      "instance_id": "matplotlib__matplotlib-25442",
       "localization": {
         "file_acc@1": true,
-        "function_recall@1": 0.0,
+        "function_recall@1": 0.2,
         "file_acc@3": true,
-        "function_recall@3": 1.0,
+        "function_recall@3": 0.2,
         "file_acc@5": true,
-        "function_recall@5": 1.0,
+        "function_recall@5": 0.4,
         "predicted_files": [
-          "sklearn/neighbors/base.py",
-          "sklearn/neighbors/approximate.py",
-          "sklearn/neighbors/classification.py",
-          "sklearn/neighbors/tests/test_neighbors.py"
+          "lib/matplotlib/offsetbox.py",
+          "lib/matplotlib/tests/test_offsetbox.py"
         ]
       },
       "locations": [
         {
-          "path": "sklearn/neighbors/base.py",
-          "symbol": "NeighborsBase.__init__"
+          "path": "lib/matplotlib/offsetbox.py",
+          "symbol": "DraggableBase.disconnect"
         },
         {
-          "path": "sklearn/neighbors/base.py",
-          "symbol": "NeighborsBase._fit"
+          "path": "lib/matplotlib/offsetbox.py",
+          "symbol": "DraggableBase._check_still_parented"
         },
         {
-          "path": "sklearn/neighbors/base.py",
-          "symbol": "KNeighborsMixin.kneighbors"
+          "path": "lib/matplotlib/offsetbox.py",
+          "symbol": "DraggableBase.canvas"
         },
         {
-          "path": "sklearn/neighbors/base.py",
-          "symbol": "KNeighborsMixin.kneighbors_graph"
+          "path": "lib/matplotlib/offsetbox.py",
+          "symbol": "DraggableBase.on_release"
         },
         {
-          "path": "sklearn/neighbors/base.py",
-          "symbol": "NeighborsBase"
-        },
-        {
-          "path": "sklearn/neighbors/approximate.py",
-          "symbol": "LSHForest.kneighbors"
-        },
-        {
-          "path": "sklearn/neighbors/classification.py",
-          "symbol": "KNeighborsClassifier.__init__"
-        },
-        {
-          "path": "sklearn/neighbors/tests/test_neighbors.py",
-          "symbol": ""
+          "path": "lib/matplotlib/tests/test_offsetbox.py",
+          "symbol": "test_disconnect_detached_ref_artist"
         }
       ],
       "passed": true,
       "status": "completed",
-      "summary": "n_neighbors is stored unvalidated in NeighborsBase.__init__ (line 110) and consumed downstream. Add integer validation there so NearestNeighbors(n_neighbors=3.) fails early with a helpful ValueError. Also extend the existing positivity check in _fit (lines 255-260) and validate the resolved n_neighbors in KNeighborsMixin.kneighbors (after line 328-329) and kneighbors_graph (after lines 467-468) so per-call overrides like kneighbors(X, n_neighbors=3.) are caught too. np.integer must be accepted; reject plain floats (including 3.0). Add regression tests in sklearn/neighbors/tests/test_neighbors.py covering constructor and kneighbors/kneighbors_graph with float n_neighbors and acceptance of int/np.int64.",
       "assertions": [
         {
-          "type": "file_acc@1",
+          "type": "top1_location",
           "passed": true
         }
       ],
@@ -750,26 +751,26 @@
       "mutation_checks": [],
       "metrics": {
         "completed": true,
-        "steps": 6,
-        "model_calls": 7,
+        "steps": 11,
+        "model_calls": 12,
         "model_errors": 0,
-        "request_attempts": 10,
-        "parse_retries": 2,
-        "closed_brackets": 1,
-        "model_latency_ms": 15352,
-        "tool_calls": 5,
+        "request_attempts": 15,
+        "parse_retries": 3,
+        "model_latency_ms": 27886,
+        "tool_calls": 10,
         "tool_errors": 0,
         "tool_counts": {
           "inspect_python": 1,
+          "list_files": 1,
           "read_file": 3,
-          "search": 1
+          "search": 5
         },
         "changed_files": 0,
         "checks_passed": 0,
         "checks_failed": 0,
-        "input_tokens": 41083,
-        "output_tokens": 2291,
-        "total_tokens": 43374,
+        "input_tokens": 73645,
+        "output_tokens": 5034,
+        "total_tokens": 78679,
         "provider_models": [
           "deepseek-flash"
         ]
@@ -825,7 +826,7 @@
       "summary": "Block-multiplying a BlockMatrix with ZeroMatrix blocks repeatedly fails with AttributeError: 'Zero' object has no attribute 'cols'. Root cause: during BlockMatrix._blockmul the block product/zero-sum simplification collapses entries that are sums/products of zero blocks into the scalar sympy Zero instead of a shaped ZeroMatrix. When the resulting BlockMatrix is multiplied again, colblocksizes/rowblocksizes index blocks[0,i].cols (and .rows) on a bare Zero and raise. The fix should preserve shaped zero blocks. Primary change point is BlockMatrix._blockmul (assemble result blocks, replacing bare Zero with a ZeroMatrix of the correct product dimensions) and/or the block-size machinery in blockmatrix.py; secondary candidates are the zero-summing rules in matadd.py / matmul.py (MatAdd/any_zeros) that drop shape, and ZeroMatrix in matexpr.py. A regression test belongs in test_blockmatrix.py.",
       "assertions": [
         {
-          "type": "file_acc@1",
+          "type": "top1_location",
           "passed": false
         }
       ],
