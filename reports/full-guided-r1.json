@@ -1,0 +1,3298 @@
+{
+  "model": "deepseek-flash",
+  "ast_enabled": true,
+  "context_retrieval_enabled": true,
+  "ast_guidance": true,
+  "total": 44,
+  "passed": 32,
+  "pass_rate": 0.7273,
+  "average_steps": 9.68,
+  "average_tool_calls": 8.57,
+  "tool_errors": 10,
+  "model_errors": 3,
+  "request_attempts": 562,
+  "parse_retries": 40,
+  "closed_brackets": 19,
+  "total_tokens": 2940644,
+  "tool_counts": {
+    "inspect_python": 52,
+    "list_files": 15,
+    "read_file": 150,
+    "retrieve_context": 1,
+    "search": 120,
+    "symbol_search": 39
+  },
+  "ast_tool_calls": 91,
+  "context_retrieval_calls": 1,
+  "provider_models": [
+    "deepseek-flash"
+  ],
+  "families": {
+    "large": {
+      "total": 15,
+      "passed": 10,
+      "pass_rate": 0.6667
+    },
+    "medium": {
+      "total": 15,
+      "passed": 13,
+      "pass_rate": 0.8667
+    },
+    "small": {
+      "total": 14,
+      "passed": 9,
+      "pass_rate": 0.6429
+    }
+  },
+  "localization": {
+    "cases": 41,
+    "file_acc@1": 0.9268,
+    "file_acc@3": 0.9512,
+    "file_acc@5": 0.9512,
+    "function_recall@1": 0.6154,
+    "function_recall@3": 0.7359,
+    "function_recall@5": 0.7462
+  },
+  "results": [
+    {
+      "name": "pydata__xarray-4248",
+      "family": "small",
+      "instance_id": "pydata__xarray-4248",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.0,
+        "file_acc@3": true,
+        "function_recall@3": 0.0,
+        "file_acc@5": true,
+        "function_recall@5": 0.0,
+        "predicted_files": [
+          "xarray/core/formatting.py",
+          "xarray/tests/test_formatting.py",
+          "xarray/core/formatting_html.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "xarray/core/formatting.py",
+          "symbol": "summarize_variable"
+        },
+        {
+          "path": "xarray/core/formatting.py",
+          "symbol": "_get_col_items"
+        },
+        {
+          "path": "xarray/core/formatting.py",
+          "symbol": "_calculate_col_width"
+        },
+        {
+          "path": "xarray/core/formatting.py",
+          "symbol": "summarize_coord"
+        },
+        {
+          "path": "xarray/core/formatting.py",
+          "symbol": "summarize_datavar"
+        },
+        {
+          "path": "xarray/core/formatting.py",
+          "symbol": "dataset_repr"
+        },
+        {
+          "path": "xarray/core/formatting.py",
+          "symbol": "_summarize_coord_levels"
+        },
+        {
+          "path": "xarray/core/formatting.py",
+          "symbol": "_summarize_coord_multiindex"
+        },
+        {
+          "path": "xarray/tests/test_formatting.py",
+          "symbol": "TestFormatting"
+        },
+        {
+          "path": "xarray/core/formatting_html.py",
+          "symbol": "summarize_variable"
+        }
+      ],
+      "passed": false,
+      "status": "completed",
+      "summary": "Dataset/DataArray text repr is built in xarray/core/formatting.py. To show units inline (e.g. `rainfall, in mm (time, y, x) float32`), the name column label built in summarize_variable must append `, in <units>` (and the units should also be included when the extra items are formatted, e.g. _get_col_items/_calculate_col_width so column alignment stays correct). summarize_datavar and summarize_coord are the entry points used by data_vars_repr/coords_repr, and dataset_repr computes the shared col_width via _get_col_items(ds.variables). Regression tests should be added/updated in xarray/tests/test_formatting.py.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": false
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 7,
+        "model_calls": 8,
+        "model_errors": 0,
+        "request_attempts": 11,
+        "parse_retries": 1,
+        "closed_brackets": 1,
+        "model_latency_ms": 21214,
+        "tool_calls": 6,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 2,
+          "read_file": 2,
+          "search": 1,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 52468,
+        "output_tokens": 3245,
+        "total_tokens": 55713,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "pallets__flask-5063",
+      "family": "small",
+      "instance_id": "pallets__flask-5063",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "src/flask/cli.py",
+          "tests/test_cli.py",
+          "CHANGES.rst"
+        ]
+      },
+      "locations": [
+        {
+          "path": "src/flask/cli.py",
+          "symbol": "routes_command"
+        },
+        {
+          "path": "tests/test_cli.py",
+          "symbol": "TestRoutes.test_simple"
+        },
+        {
+          "path": "tests/test_cli.py",
+          "symbol": "TestRoutes.expect_order"
+        },
+        {
+          "path": "tests/test_cli.py",
+          "symbol": "TestRoutes.test_sort"
+        },
+        {
+          "path": "tests/test_cli.py",
+          "symbol": "TestRoutes.test_all_methods"
+        },
+        {
+          "path": "CHANGES.rst",
+          "symbol": ""
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "The `flask routes` output is produced by `routes_command` in src/flask/cli.py, which currently builds a three-column table (Endpoint, Methods, Rule) from `current_app.url_map.iter_rules()`. To add a Domain column, that function must compute a domain per rule using `rule.subdomain` combined with `current_app.config['SERVER_NAME']` (falling back to the bare SERVER_NAME when subdomain is empty, and degrading gracefully when SERVER_NAME is None), then extend the headers, widths, row format, and echo loop accordingly. The tests in `TestRoutes` (tests/test_cli.py) that assert the current layout/order must be updated, and a CHANGES.rst entry should be added.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 8,
+        "model_calls": 9,
+        "model_errors": 0,
+        "request_attempts": 13,
+        "parse_retries": 2,
+        "closed_brackets": 1,
+        "model_latency_ms": 19451,
+        "tool_calls": 7,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 1,
+          "read_file": 4,
+          "search": 1,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 56602,
+        "output_tokens": 2512,
+        "total_tokens": 59114,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "psf__requests-2148",
+      "family": "small",
+      "instance_id": "psf__requests-2148",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "requests/models.py",
+          "requests/exceptions.py",
+          "tests/test_requests.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "requests/models.py",
+          "symbol": "Response.iter_content.generate"
+        },
+        {
+          "path": "requests/models.py",
+          "symbol": "Response.iter_content"
+        },
+        {
+          "path": "requests/models.py",
+          "symbol": "import socket"
+        },
+        {
+          "path": "requests/exceptions.py",
+          "symbol": "ConnectionError"
+        },
+        {
+          "path": "tests/test_requests.py",
+          "symbol": "test_response_socket_error"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "Body-streaming errors are not translated: Response.iter_content's inner generate() generator catches only IncompleteRead (->ChunkedEncodingError) and DecodeError (->ContentDecodingError), so a raw socket.error raised by httplib/urllib3 while reading the response body propagates to callers unchanged (this also affects Response.content/text, which consume iter_content). adapters.py already handles socket.error at send-time (line 389-390, raising ConnectionError), but that path does not cover exceptions raised while streaming/consuming the body. The change: in requests/models.py add `import socket` and wrap the streaming read so that a bare socket.error is re-raised as requests.exceptions.ConnectionError, while preserving the existing IncompleteRead/DecodeError mappings and not double-wrapping ReadTimeoutError. Add ConnectionError to the models.py exceptions import (line 23-25). A regression test simulating a mid-stream socket reset belongs in tests/test_requests.py.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 7,
+        "model_calls": 8,
+        "model_errors": 0,
+        "request_attempts": 12,
+        "parse_retries": 2,
+        "closed_brackets": 1,
+        "model_latency_ms": 23109,
+        "tool_calls": 6,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 1,
+          "read_file": 3,
+          "search": 2
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 53555,
+        "output_tokens": 3623,
+        "total_tokens": 57178,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "mwaskom__seaborn-3010",
+      "family": "small",
+      "instance_id": "mwaskom__seaborn-3010",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.0,
+        "file_acc@3": true,
+        "function_recall@3": 0.0,
+        "file_acc@5": true,
+        "function_recall@5": 0.0,
+        "predicted_files": [
+          "seaborn/_stats/regression.py",
+          "tests/_stats/test_regression.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "seaborn/_stats/regression.py",
+          "symbol": "PolyFit._fit_predict"
+        },
+        {
+          "path": "tests/_stats/test_regression.py",
+          "symbol": "TestPolyFit"
+        }
+      ],
+      "passed": false,
+      "status": "completed",
+      "summary": "PolyFit._fit_predict passes raw x/y (including None/NaN) directly into np.polyfit, np.linspace, and np.polyval, so missing values propagate into the least-squares solve and raise LinAlgError ('SVD did not converge'). GroupBy.apply does not drop NA before invoking the stat. The minimal fix is to filter non-finite x/y rows inside PolyFit._fit_predict before fitting (and before computing the grid), and to handle the insufficient-points case consistently with the existing x.nunique() <= order branch. A regression test asserting no exception and expected output shape/columns for missing data (with and without grouping) belongs alongside the existing TestPolyFit tests.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": false
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 5,
+        "model_calls": 6,
+        "model_errors": 0,
+        "request_attempts": 9,
+        "parse_retries": 1,
+        "closed_brackets": 0,
+        "model_latency_ms": 13971,
+        "tool_calls": 4,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 1,
+          "read_file": 2,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 27786,
+        "output_tokens": 1781,
+        "total_tokens": 29567,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "psf__requests-2674",
+      "family": "small",
+      "instance_id": "psf__requests-2674",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "requests/adapters.py",
+          "requests/models.py",
+          "requests/exceptions.py",
+          "test_requests.py",
+          "HISTORY.rst"
+        ]
+      },
+      "locations": [
+        {
+          "path": "requests/adapters.py",
+          "symbol": "HTTPAdapter.send"
+        },
+        {
+          "path": "requests/models.py",
+          "symbol": "Response.iter_content"
+        },
+        {
+          "path": "requests/exceptions.py",
+          "symbol": "ContentDecodingError"
+        },
+        {
+          "path": "test_requests.py",
+          "symbol": "TestTimeout.test_connect_timeout"
+        },
+        {
+          "path": "HISTORY.rst",
+          "symbol": ""
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "The urllib3 exception leak originates in the adapter's exception-conversion block and the response-stream generator. requests/adapters.py HTTPAdapter.send already converts ProtocolError/socket.error, MaxRetryError (ConnectTimeoutError->ConnectTimeout, ResponseError->RetryError), ProxyError, SSLError and ReadTimeoutError, but has no clause for a directly-raised urllib3 DecodeError or for the generic urllib3 TimeoutError (the proxy-timeout case); the generic TimeoutError clause must be ordered after the ReadTimeoutError/ConnectTimeoutError subclass clauses so they are not swallowed. requests/models.py Response.iter_content.generate() wraps ProtocolError->ChunkedEncodingError, DecodeError->ContentDecodingError and ReadTimeoutError->ConnectionError, but likewise does not convert a generic urllib3 TimeoutError raised during streaming. Regression tests belong in test_requests.py (existing ConnectTimeout wrapping tests around lines 1504-1512), and HISTORY.rst documents exception-wrapping behavior. Not modified (write mode disabled).",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 15,
+        "model_calls": 16,
+        "model_errors": 0,
+        "request_attempts": 16,
+        "parse_retries": 0,
+        "closed_brackets": 1,
+        "model_latency_ms": 32139,
+        "tool_calls": 14,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 2,
+          "read_file": 6,
+          "search": 5,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 88145,
+        "output_tokens": 5486,
+        "total_tokens": 93631,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "pallets__flask-4992",
+      "family": "small",
+      "instance_id": "pallets__flask-4992",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "src/flask/config.py",
+          "tests/test_config.py",
+          "docs/config.rst",
+          "CHANGES.rst"
+        ]
+      },
+      "locations": [
+        {
+          "path": "src/flask/config.py",
+          "symbol": "Config.from_file"
+        },
+        {
+          "path": "tests/test_config.py",
+          "symbol": "test_config_from_file"
+        },
+        {
+          "path": "tests/test_config.py",
+          "symbol": "test_config_missing_file"
+        },
+        {
+          "path": "docs/config.rst",
+          "symbol": ""
+        },
+        {
+          "path": "CHANGES.rst",
+          "symbol": ""
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "Add a text/binary mode option to Config.from_file(). The implementation is in Flask.Config.from_file (src/flask/config.py lines 232-273): it currently does `with open(filename) as f:` and the load callable annotation is `t.Callable[[t.IO[t.Any]], t.Mapping]`. To support tomllib.load (which requires binary), add a `text: bool = True` keyword parameter (default preserves current text-mode behavior) and open with `open(filename, \"r\" if text else \"rb\")`, updating the type annotation/docstring. Supporting updates: tests/test_config.py (test_config_from_file at line 33 to cover binary mode; test_config_missing_file at line 178 for silent/OSError behavior), docs/config.rst (Configuring from Data Files, ~line 404) to document binary/TOML usage, and CHANGES.rst (unreleased 2.3.0 section, near line 30) for a changelog entry.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 8,
+        "model_calls": 9,
+        "model_errors": 0,
+        "request_attempts": 12,
+        "parse_retries": 1,
+        "closed_brackets": 1,
+        "model_latency_ms": 18295,
+        "tool_calls": 7,
+        "tool_errors": 0,
+        "tool_counts": {
+          "read_file": 5,
+          "search": 1,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 30924,
+        "output_tokens": 2417,
+        "total_tokens": 33341,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "mwaskom__seaborn-2848",
+      "family": "small",
+      "instance_id": "mwaskom__seaborn-2848",
+      "localization": {
+        "file_acc@1": false,
+        "function_recall@1": 0.0,
+        "file_acc@3": false,
+        "function_recall@3": 0.0,
+        "file_acc@5": false,
+        "function_recall@5": 0.0,
+        "predicted_files": [
+          "seaborn/axisgrid.py",
+          "seaborn/_core/rules.py",
+          "tests/test_axisgrid.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "seaborn/axisgrid.py",
+          "symbol": "PairGrid.__init__"
+        },
+        {
+          "path": "seaborn/axisgrid.py",
+          "symbol": "Grid._get_palette"
+        },
+        {
+          "path": "seaborn/_core/rules.py",
+          "symbol": "categorical_order"
+        },
+        {
+          "path": "seaborn/axisgrid.py",
+          "symbol": "PairGrid._plot_bivariate"
+        },
+        {
+          "path": "seaborn/axisgrid.py",
+          "symbol": "PairGrid._map_diag_iter_hue"
+        },
+        {
+          "path": "tests/test_axisgrid.py",
+          "symbol": "TestPairGrid"
+        }
+      ],
+      "passed": false,
+      "status": "completed",
+      "summary": "The failure comes from PairGrid assuming every hue value in the data is represented in hue_order. In seaborn/axisgrid.py PairGrid.__init__ (hue branch around line 1281) `hue_names = hue_order = categorical_order(data[hue], hue_order)` stores the user-provided subset order while self.hue_vals keeps the full hue column, so downstream grouping/plotting (map_diag/_map_diag_iter_hue, _plot_bivariate) and _get_palette receive a hue vector containing levels absent from hue_order. The categorical_order helper (seaborn/_core/rules.py, line 125) returns a user order verbatim and its variable_type/unique path (line 149-150) can hit np.isnan on the full column. Fix by subsetting self.data to rows whose hue is in hue_order before computing categories/palette/masks, in PairGrid.__init__, and making categorical_order/legend construction honor the requested subset order consistently. Add a regression test in TestPairGrid (tests/test_axisgrid.py, class at line 677) asserting pairplot(iris, hue='species', hue_order=['setosa','versicolor']) runs without exception and yields exactly the requested legend levels.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": false
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 16,
+        "model_calls": 17,
+        "model_errors": 0,
+        "request_attempts": 19,
+        "parse_retries": 1,
+        "closed_brackets": 1,
+        "model_latency_ms": 36649,
+        "tool_calls": 15,
+        "tool_errors": 1,
+        "tool_counts": {
+          "inspect_python": 2,
+          "read_file": 6,
+          "search": 2,
+          "symbol_search": 5
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 92555,
+        "output_tokens": 6071,
+        "total_tokens": 98626,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "pallets__flask-4045",
+      "family": "small",
+      "instance_id": "pallets__flask-4045",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.5,
+        "file_acc@3": true,
+        "function_recall@3": 0.5,
+        "file_acc@5": true,
+        "function_recall@5": 0.5,
+        "predicted_files": [
+          "src/flask/blueprints.py",
+          "tests/test_blueprints.py",
+          "CHANGES.rst"
+        ]
+      },
+      "locations": [
+        {
+          "path": "src/flask/blueprints.py",
+          "symbol": "Blueprint.__init__"
+        },
+        {
+          "path": "tests/test_blueprints.py",
+          "symbol": ""
+        },
+        {
+          "path": "CHANGES.rst",
+          "symbol": ""
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "Add a ValueError in Blueprint.__init__ when name contains '.', mirroring the endpoint-name dot check. The only source change needed is in src/flask/blueprints.py, at the point self.name is set. A regression test should be added in tests/test_blueprints.py, and optionally a CHANGES.rst note.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 16,
+        "model_calls": 17,
+        "model_errors": 0,
+        "request_attempts": 18,
+        "parse_retries": 1,
+        "closed_brackets": 0,
+        "model_latency_ms": 22271,
+        "tool_calls": 15,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 2,
+          "list_files": 1,
+          "read_file": 4,
+          "retrieve_context": 1,
+          "search": 7
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 122461,
+        "output_tokens": 2640,
+        "total_tokens": 125101,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "psf__requests-863",
+      "family": "small",
+      "instance_id": "psf__requests-863",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "requests/models.py",
+          "requests/hooks.py",
+          "requests/sessions.py",
+          "tests/test_requests.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "requests/models.py",
+          "symbol": "Request.register_hook"
+        },
+        {
+          "path": "requests/models.py",
+          "symbol": "Request.__init__"
+        },
+        {
+          "path": "requests/hooks.py",
+          "symbol": "dispatch_hook"
+        },
+        {
+          "path": "requests/sessions.py",
+          "symbol": "Session.request"
+        },
+        {
+          "path": "tests/test_requests.py",
+          "symbol": "RequestsTest.test_multiple_hooks"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "Localized the hooks parsing issue to requests/models.py. Request.__init__ (line ~151) loops over the hooks dict and calls self.register_hook(event=k, hook=v) with the raw value; register_hook (line ~463) unconditionally appends the value, so a list value becomes a nested list and later fails in dispatch_hook since list is not callable. The fix must normalize each value in Request.register_hook (append callables, extend non-string iterables) or add parsing in Request.__init__ before registering, while keeping single-callable behavior backward compatible. requests/hooks.py dispatch_hook already accepts lists and needs no change for accepted values, though its callable check precedence is relevant to the normalization rule. Session.request's setdefault-based merging in requests/sessions.py (line ~170) passes session hooks through unchanged, so no change is required there for flat lists. Tests test_multiple_hooks already covers list values in tests/test_requests.py (line ~713) and can be extended.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 14,
+        "model_calls": 15,
+        "model_errors": 0,
+        "request_attempts": 17,
+        "parse_retries": 1,
+        "closed_brackets": 0,
+        "model_latency_ms": 23086,
+        "tool_calls": 13,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 2,
+          "read_file": 7,
+          "search": 4
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 70212,
+        "output_tokens": 2724,
+        "total_tokens": 72936,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "psf__requests-2317",
+      "family": "small",
+      "instance_id": "psf__requests-2317",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "requests/sessions.py",
+          "requests/utils.py",
+          "test_requests.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "requests/sessions.py",
+          "symbol": "Session.request"
+        },
+        {
+          "path": "requests/utils.py",
+          "symbol": "to_native_string"
+        },
+        {
+          "path": "test_requests.py",
+          "symbol": "RequestsTestCase.test_unicode_method_name"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "The bug is the method normalization at requests/sessions.py line 428 in Session.request: `method = builtin_str(method)`. On Python 3 builtin_str is `str`, so passing bytes (e.g. b'GET' from neutronclient's safe_encode_list) produces the literal string \"b'GET'\" instead of decoding to 'GET'. The fix is to normalize via the already-imported `to_native_string` (requests/utils.py), which decodes `bytes` to native str (utf-8) and leaves `str` untouched, preserving Python 2/3 behavior. Add a regression test next to test_unicode_method_name in test_requests.py asserting a bytes method is sent as 'GET'.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 14,
+        "model_calls": 15,
+        "model_errors": 0,
+        "request_attempts": 19,
+        "parse_retries": 2,
+        "closed_brackets": 0,
+        "model_latency_ms": 26817,
+        "tool_calls": 13,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 2,
+          "read_file": 6,
+          "search": 3,
+          "symbol_search": 2
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 84794,
+        "output_tokens": 3068,
+        "total_tokens": 87862,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "psf__requests-3362",
+      "family": "small",
+      "instance_id": "psf__requests-3362",
+      "localization": {
+        "file_acc@1": false,
+        "function_recall@1": 0.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "requests/models.py",
+          "requests/utils.py",
+          "docs/user/advanced.rst"
+        ]
+      },
+      "locations": [
+        {
+          "path": "requests/models.py",
+          "symbol": "Response.iter_content"
+        },
+        {
+          "path": "requests/utils.py",
+          "symbol": "stream_decode_response_unicode"
+        },
+        {
+          "path": "docs/user/advanced.rst",
+          "symbol": ""
+        },
+        {
+          "path": "requests/models.py",
+          "symbol": "Response.text"
+        }
+      ],
+      "passed": false,
+      "status": "completed",
+      "summary": "iter_content(decode_unicode=True) is NOT equivalent to Response.text. It delegates to stream_decode_response_unicode (requests/utils.py:359), which yields raw bytes unless r.encoding is set. Response.text, by contrast, falls back to chardet via apparent_encoding when self.encoding is None (requests/models.py:757-793). For an application/json response with no charset parameter, requests leaves encoding as None (only text/* content types get a default utf-8), so iter_content(decode_unicode=True) legitimately yields bytes. This is intended behavior, not a bug, so the smallest correct change is to clarify the Response.iter_content docstring (and optionally the helper/doc docs) rather than alter streaming semantics. Localization: the docstring is the primary change site; helper docstring and streaming docs are secondary.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": false
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 10,
+        "model_calls": 11,
+        "model_errors": 0,
+        "request_attempts": 12,
+        "parse_retries": 0,
+        "closed_brackets": 0,
+        "model_latency_ms": 20257,
+        "tool_calls": 8,
+        "tool_errors": 1,
+        "tool_counts": {
+          "inspect_python": 1,
+          "read_file": 3,
+          "search": 2,
+          "symbol_search": 2
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 55793,
+        "output_tokens": 2874,
+        "total_tokens": 58667,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "pydata__xarray-3364",
+      "family": "small",
+      "passed": false,
+      "status": "error",
+      "error": "RuntimeError: Model request failed after retries: Model response did not contain a JSON object.",
+      "assertions": [],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": false,
+        "steps": 0,
+        "model_calls": 1,
+        "model_errors": 1,
+        "request_attempts": 3,
+        "parse_retries": 2,
+        "closed_brackets": 0,
+        "model_latency_ms": 4628,
+        "tool_calls": 0,
+        "tool_errors": 0,
+        "tool_counts": {},
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 2226,
+        "output_tokens": 462,
+        "total_tokens": 2688,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      },
+      "fatal": false
+    },
+    {
+      "name": "pydata__xarray-4094",
+      "family": "small",
+      "instance_id": "pydata__xarray-4094",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "xarray/core/dataarray.py",
+          "xarray/tests/test_dataset.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "xarray/core/dataarray.py",
+          "symbol": "DataArray.to_unstacked_dataset"
+        },
+        {
+          "path": "xarray/tests/test_dataset.py",
+          "symbol": "TestDataset.test_to_stacked_array_to_unstacked_dataset_different_dimension"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "The bug is in DataArray.to_unstacked_dataset (xarray/core/dataarray.py:1962-1964). For each variable it does `self.sel({variable_dim: k}).squeeze(drop=True)`. When a variable is single-dimensional (no remaining dims after selecting the level), the scalar coordinate `variable_dim` survives and differs per variable, so `Dataset(data_dict)` / merge raises MergeError about conflicting values for 'y'. Fix by dropping the `variable_dim` scalar coordinate for each selected variable before building the Dataset (while preserving multi-dim behavior). A regression test should be added alongside test_to_stacked_array_to_unstacked_dataset_different_dimension in xarray/tests/test_dataset.py.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 5,
+        "model_calls": 6,
+        "model_errors": 0,
+        "request_attempts": 8,
+        "parse_retries": 1,
+        "closed_brackets": 0,
+        "model_latency_ms": 24313,
+        "tool_calls": 4,
+        "tool_errors": 0,
+        "tool_counts": {
+          "read_file": 3,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 20880,
+        "output_tokens": 4257,
+        "total_tokens": 25137,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "psf__requests-1963",
+      "family": "small",
+      "instance_id": "psf__requests-1963",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "requests/sessions.py",
+          "test_requests.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "requests/sessions.py",
+          "symbol": "SessionRedirectMixin.resolve_redirects"
+        },
+        {
+          "path": "test_requests.py",
+          "symbol": "RequestsTestCase"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "In requests/sessions.py, `SessionRedirectMixin.resolve_redirects` rebuilds each hop from the original request: line 91 does `prepared_request = req.copy()` and line 102 does `method = req.method`. Because the base is always the initial request, a method change caused by an intermediate status (e.g. 303 See Other converting POST to GET) is not carried forward, so a later 307 re-sends the original POST instead of the intermediate GET. The fix is to track the request used for the previous hop (initialize `prepared_request = req` before the loop, then at the top of the loop copy the previous prepared request and derive `method` from it), while keeping 303/301/302 rewrites, 307/308 preservation, and cross-host Authorization stripping intact. A regression test should be added to `RequestsTestCase` in test_requests.py alongside the existing redirect tests (e.g. near test_cookie_sent_on_redirect / test_requests_in_history_are_not_overridden), covering the POST -> 303 -> 307 chain and asserting the final request method is GET.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 11,
+        "model_calls": 13,
+        "model_errors": 0,
+        "request_attempts": 15,
+        "parse_retries": 1,
+        "closed_brackets": 0,
+        "model_latency_ms": 20947,
+        "tool_calls": 9,
+        "tool_errors": 1,
+        "tool_counts": {
+          "inspect_python": 1,
+          "read_file": 3,
+          "search": 4,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 45754,
+        "output_tokens": 2599,
+        "total_tokens": 48353,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "scikit-learn__scikit-learn-15535",
+      "family": "medium",
+      "instance_id": "scikit-learn__scikit-learn-15535",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "sklearn/metrics/cluster/_supervised.py",
+          "sklearn/metrics/cluster/tests/test_supervised.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "sklearn/metrics/cluster/_supervised.py",
+          "symbol": "check_clusterings"
+        },
+        {
+          "path": "sklearn/metrics/cluster/tests/test_supervised.py",
+          "symbol": "test_mutual_info_score"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "The regression comes from check_clusterings using check_array defaults, which coerce labels to a numeric dtype. For object-dtype string labels, check_array(dtype='numeric') attempts float conversion and raises ValueError; for a plain unicode/numpy <U dtype it triggers the DataConversionWarning about string labels. Passing dtype=None (and requiring 1D with ensure_2d=False, ensure_min_samples=0) avoids the cast so downstream contingency_matrix uses np.unique on the original label values. A regression test should be added in the supervised metrics test module covering object-dtype string labels with mutual_info_score (and related metrics).",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 8,
+        "model_calls": 9,
+        "model_errors": 0,
+        "request_attempts": 11,
+        "parse_retries": 0,
+        "closed_brackets": 0,
+        "model_latency_ms": 78944,
+        "tool_calls": 7,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 1,
+          "read_file": 3,
+          "search": 2,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 45802,
+        "output_tokens": 17044,
+        "total_tokens": 62846,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "scikit-learn__scikit-learn-11040",
+      "family": "medium",
+      "instance_id": "scikit-learn__scikit-learn-11040",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.0,
+        "file_acc@3": true,
+        "function_recall@3": 0.5,
+        "file_acc@5": true,
+        "function_recall@5": 0.5,
+        "predicted_files": [
+          "sklearn/neighbors/base.py",
+          "sklearn/utils/validation.py",
+          "sklearn/neighbors/unsupervised.py",
+          "sklearn/neighbors/tests/test_neighbors.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "sklearn/neighbors/base.py",
+          "symbol": "NeighborsBase.__init__"
+        },
+        {
+          "path": "sklearn/neighbors/base.py",
+          "symbol": "KNeighborsMixin.kneighbors"
+        },
+        {
+          "path": "sklearn/neighbors/base.py",
+          "symbol": "KNeighborsMixin.kneighbors_graph"
+        },
+        {
+          "path": "sklearn/utils/validation.py",
+          "symbol": "check_array"
+        },
+        {
+          "path": "sklearn/neighbors/unsupervised.py",
+          "symbol": "NearestNeighbors.__init__"
+        },
+        {
+          "path": "sklearn/neighbors/tests/test_neighbors.py",
+          "symbol": ""
+        }
+      ],
+      "passed": false,
+      "status": "completed",
+      "summary": "The issue is a missing early validation of `n_neighbors` in the neighbors Python layer; non-integer floats like 3. pass through to the Cython kd_tree NeighborsHeap and raise an opaque TypeError. Fix: add a shared integer-validation helper (e.g. in sklearn/utils/validation.py, next to other checks) that raises a clear ValueError for non-integral n_neighbors, and call it (a) in NeighborsBase.__init__/the shared parameter-check path so NearestNeighbors(n_neighbors=3.) fails at construction, and (b) in KNeighborsMixin.kneighbors / KNeighborsMixin.kneighbors_graph after `if n_neighbors is None: n_neighbors = self.n_neighbors`, so an explicit float argument is caught early. The compiled binary_tree.pxi must not be edited. Regression tests belong in sklearn/neighbors/tests/test_neighbors.py.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": false
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 12,
+        "model_calls": 13,
+        "model_errors": 0,
+        "request_attempts": 14,
+        "parse_retries": 1,
+        "closed_brackets": 1,
+        "model_latency_ms": 22739,
+        "tool_calls": 11,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 3,
+          "read_file": 5,
+          "search": 2,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 103391,
+        "output_tokens": 3129,
+        "total_tokens": 106520,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "scikit-learn__scikit-learn-14092",
+      "family": "medium",
+      "instance_id": "scikit-learn__scikit-learn-14092",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "sklearn/neighbors/nca.py",
+          "sklearn/utils/validation.py",
+          "sklearn/neighbors/tests/test_nca.py",
+          "sklearn/utils/tests/test_validation.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "sklearn/neighbors/nca.py",
+          "symbol": "NeighborhoodComponentsAnalysis._validate_params"
+        },
+        {
+          "path": "sklearn/utils/validation.py",
+          "symbol": "check_scalar"
+        },
+        {
+          "path": "sklearn/neighbors/tests/test_nca.py",
+          "symbol": "test_input_validation"
+        },
+        {
+          "path": "sklearn/utils/tests/test_validation.py",
+          "symbol": "test_check_scalar_invalid"
+        },
+        {
+          "path": "sklearn/utils/tests/test_validation.py",
+          "symbol": "test_check_scalar_valid"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "NCA's `_validate_params` calls `check_scalar` with exact Python types (`int`, `float`), so `tol=1` (int, not float) and `n_components=np.int64` (not Python int) fail in GridSearchCV. The fix is to relax the target types passed to `check_scalar` in `NeighborhoodComponentsAnalysis._validate_params` to the numeric ABCs (`numbers.Integral` for n_components/max_iter/verbose, `numbers.Real` for tol) while keeping the existing value bounds; `check_scalar` in sklearn/utils/validation.py is the shared validator involved and may also be adjusted/covered if the change is made there instead. The existing test asserting `NCA(tol=1)` raises TypeError must be updated, and a GridSearchCV/Pipeline regression test added. The broader `check_param(valid_options)` API proposal is a separate follow-up.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 9,
+        "model_calls": 10,
+        "model_errors": 0,
+        "request_attempts": 11,
+        "parse_retries": 0,
+        "closed_brackets": 0,
+        "model_latency_ms": 29663,
+        "tool_calls": 8,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 1,
+          "list_files": 1,
+          "read_file": 3,
+          "search": 1,
+          "symbol_search": 2
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 52444,
+        "output_tokens": 4941,
+        "total_tokens": 57385,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "pytest-dev__pytest-6116",
+      "family": "medium",
+      "instance_id": "pytest-dev__pytest-6116",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "src/_pytest/main.py",
+          "changelog"
+        ]
+      },
+      "locations": [
+        {
+          "path": "src/_pytest/main.py",
+          "symbol": "pytest_addoption"
+        },
+        {
+          "path": "changelog",
+          "symbol": ""
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "Localization only (no edits). The single-character/short alias for --collect-only must be added as an extra option string on the existing group.addoption call inside pytest_addoption in src/_pytest/main.py (currently lines 109-114, options --collectonly / --collect-only, action store_true, dest collectonly). Adding the alias there reuses the same dest/action; a second option is not needed. No existing test references collectonly, so coverage would go in testing/ (new test) and a changelog fragment under changelog/. Note the issue is a discussion/proposal: the exact character is undecided (and argparse prefix abbreviation --co may already resolve), so the char choice still needs maintainer/community sign-off.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 13,
+        "model_calls": 14,
+        "model_errors": 0,
+        "request_attempts": 15,
+        "parse_retries": 1,
+        "closed_brackets": 0,
+        "model_latency_ms": 28592,
+        "tool_calls": 12,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 1,
+          "list_files": 2,
+          "read_file": 2,
+          "search": 6,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 94843,
+        "output_tokens": 4126,
+        "total_tokens": 98969,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "scikit-learn__scikit-learn-10508",
+      "family": "medium",
+      "instance_id": "scikit-learn__scikit-learn-10508",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.5,
+        "file_acc@3": true,
+        "function_recall@3": 0.5,
+        "file_acc@5": true,
+        "function_recall@5": 0.5,
+        "predicted_files": [
+          "sklearn/preprocessing/label.py",
+          "sklearn/preprocessing/tests/test_label.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "sklearn/preprocessing/label.py",
+          "symbol": "LabelEncoder.transform"
+        },
+        {
+          "path": "sklearn/preprocessing/tests/test_label.py",
+          "symbol": "test_label_encoder"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "LabelEncoder.transform calls np.searchsorted(self.classes_, y) after column_or_1d validation. For an empty list, column_or_1d yields a float64 empty array, and searchsorted cannot safely cast it to a string classes dtype, raising TypeError. The fix is to add an explicit empty-input early return in LabelEncoder.transform (after validation, before searchsorted), returning an empty integer array, and add regression tests in sklearn/preprocessing/tests/test_label.py.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 4,
+        "model_calls": 5,
+        "model_errors": 0,
+        "request_attempts": 6,
+        "parse_retries": 0,
+        "closed_brackets": 1,
+        "model_latency_ms": 12324,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "tool_counts": {
+          "read_file": 1,
+          "search": 1,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 10959,
+        "output_tokens": 1832,
+        "total_tokens": 12791,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "sphinx-doc__sphinx-7686",
+      "family": "medium",
+      "instance_id": "sphinx-doc__sphinx-7686",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "sphinx/ext/autosummary/generate.py",
+          "tests/test_ext_autosummary.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "sphinx/ext/autosummary/generate.py",
+          "symbol": "generate_autosummary_content"
+        },
+        {
+          "path": "sphinx/ext/autosummary/generate.py",
+          "symbol": "generate_autosummary_content.get_members"
+        },
+        {
+          "path": "tests/test_ext_autosummary.py",
+          "symbol": "test_autosummary_imported_members"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "The `members` variable for the module template is populated with the unfiltered `dir(obj)` at sphinx/ext/autosummary/generate.py:249, so imported names leak in regardless of autosummary_imported_members. The fix belongs in the module branch of generate_autosummary_content: build `ns['members']` from members filtered by the same logic already used by the inner get_members (respecting the `imported_members` argument). get_members (line 195) is the filter implementation to reuse/extend, and a regression test should be added alongside test_autosummary_imported_members in tests/test_ext_autosummary.py with a matching test root.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 8,
+        "model_calls": 9,
+        "model_errors": 0,
+        "request_attempts": 13,
+        "parse_retries": 2,
+        "closed_brackets": 0,
+        "model_latency_ms": 41083,
+        "tool_calls": 7,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 1,
+          "read_file": 3,
+          "search": 2,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 57629,
+        "output_tokens": 7917,
+        "total_tokens": 65546,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "astropy__astropy-6938",
+      "family": "medium",
+      "instance_id": "astropy__astropy-6938",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "astropy/io/fits/fitsrec.py",
+          "astropy/io/fits/tests/test_table.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "astropy/io/fits/fitsrec.py",
+          "symbol": "FITS_rec._scale_back_ascii"
+        },
+        {
+          "path": "astropy/io/fits/tests/test_table.py",
+          "symbol": "TestTableFunctions.test_ascii_table"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "The bug is in FITS_rec._scale_back_ascii in astropy/io/fits/fitsrec.py at line 1264, where `output_field.replace(encode_ascii('E'), encode_ascii('D'))` is called without assigning the result back. numpy chararray.replace returns a new array rather than mutating in place, so the intended E->D exponent substitution for FITS 'D'-format columns is silently a no-op. The minimal fix is to assign back in place, e.g. `output_field[:] = output_field.replace(encode_ascii('E'), encode_ascii('D'))` (or equivalent), inside that method. Regression coverage should be added alongside the existing ASCII-table tests in astropy/io/fits/tests/test_table.py (TestTableFunctions.test_ascii_table, or a new test method in that class) exercising a 'D'-format column so the branch is exercised and the D exponent is asserted.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 8,
+        "model_calls": 9,
+        "model_errors": 0,
+        "request_attempts": 10,
+        "parse_retries": 0,
+        "closed_brackets": 1,
+        "model_latency_ms": 16374,
+        "tool_calls": 6,
+        "tool_errors": 1,
+        "tool_counts": {
+          "inspect_python": 2,
+          "read_file": 2,
+          "search": 2
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 56363,
+        "output_tokens": 2621,
+        "total_tokens": 58984,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "scikit-learn__scikit-learn-10949",
+      "family": "medium",
+      "instance_id": "scikit-learn__scikit-learn-10949",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "sklearn/utils/validation.py",
+          "sklearn/utils/tests/test_validation.py",
+          "doc/whats_new/v0.20.rst"
+        ]
+      },
+      "locations": [
+        {
+          "path": "sklearn/utils/validation.py",
+          "symbol": "check_array"
+        },
+        {
+          "path": "sklearn/utils/tests/test_validation.py",
+          "symbol": "test_check_array_dtype_warning"
+        },
+        {
+          "path": "doc/whats_new/v0.20.rst",
+          "symbol": ""
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "check_array fails to warn on dtype conversion for pandas DataFrames because line 464 derives dtype_orig via getattr(array, 'dtype', None), and a DataFrame has no .dtype attribute (it exposes .dtypes), so dtype_orig stays None and the warn_on_dtype check at lines 576-579 never fires. The fix is to capture the original dtype for DataFrame-like inputs before conversion (e.g. from the array values or consistent column dtypes) inside check_array and use it in the existing warning block. Add a pandas-guarded regression test and a changelog entry.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 8,
+        "model_calls": 9,
+        "model_errors": 0,
+        "request_attempts": 10,
+        "parse_retries": 0,
+        "closed_brackets": 0,
+        "model_latency_ms": 21403,
+        "tool_calls": 7,
+        "tool_errors": 0,
+        "tool_counts": {
+          "list_files": 1,
+          "read_file": 2,
+          "search": 3,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 55125,
+        "output_tokens": 3707,
+        "total_tokens": 58832,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "scikit-learn__scikit-learn-10297",
+      "family": "medium",
+      "instance_id": "scikit-learn__scikit-learn-10297",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.3333,
+        "file_acc@3": true,
+        "function_recall@3": 0.6667,
+        "file_acc@5": true,
+        "function_recall@5": 0.6667,
+        "predicted_files": [
+          "sklearn/linear_model/ridge.py",
+          "sklearn/linear_model/tests/test_ridge.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "sklearn/linear_model/ridge.py",
+          "symbol": "RidgeClassifierCV.__init__"
+        },
+        {
+          "path": "sklearn/linear_model/ridge.py",
+          "symbol": "RidgeClassifierCV"
+        },
+        {
+          "path": "sklearn/linear_model/tests/test_ridge.py",
+          "symbol": "test_ridgecv_store_cv_values"
+        },
+        {
+          "path": "sklearn/linear_model/ridge.py",
+          "symbol": "_BaseRidgeCV.__init__"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "RidgeClassifierCV.__init__ does not expose store_cv_values even though _BaseRidgeCV.__init__ already accepts it (store_cv_values=False) and its docstring documents cv_values_. Fix requires adding store_cv_values=False to RidgeClassifierCV.__init__ and forwarding it to _BaseRidgeCV.__init__, updating the RidgeClassifierCV docstring Parameters section to document store_cv_values (cv_values_ is only populated when store_cv_values=True and cv=None), and adding a focused test alongside test_ridgecv_store_cv_values in test_ridge.py.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 6,
+        "model_calls": 7,
+        "model_errors": 0,
+        "request_attempts": 7,
+        "parse_retries": 0,
+        "closed_brackets": 1,
+        "model_latency_ms": 17400,
+        "tool_calls": 5,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 1,
+          "read_file": 2,
+          "search": 1,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 36997,
+        "output_tokens": 2878,
+        "total_tokens": 39875,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "pytest-dev__pytest-5221",
+      "family": "medium",
+      "passed": false,
+      "status": "error",
+      "error": "RuntimeError: Model request failed after retries: Model response did not contain a JSON object.",
+      "assertions": [],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": false,
+        "steps": 0,
+        "model_calls": 1,
+        "model_errors": 1,
+        "request_attempts": 3,
+        "parse_retries": 2,
+        "closed_brackets": 0,
+        "model_latency_ms": 5232,
+        "tool_calls": 0,
+        "tool_errors": 0,
+        "tool_counts": {},
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 1798,
+        "output_tokens": 426,
+        "total_tokens": 2224,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      },
+      "fatal": false
+    },
+    {
+      "name": "pytest-dev__pytest-7373",
+      "family": "medium",
+      "instance_id": "pytest-dev__pytest-7373",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.5,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "src/_pytest/mark/evaluate.py",
+          "testing/test_skipping.py",
+          "changelog/"
+        ]
+      },
+      "locations": [
+        {
+          "path": "src/_pytest/mark/evaluate.py",
+          "symbol": "MarkEvaluator._istrue"
+        },
+        {
+          "path": "src/_pytest/mark/evaluate.py",
+          "symbol": "cached_eval"
+        },
+        {
+          "path": "src/_pytest/mark/evaluate.py",
+          "symbol": "MarkEvaluator._getglobals"
+        },
+        {
+          "path": "testing/test_skipping.py",
+          "symbol": "TestSkipif"
+        },
+        {
+          "path": "testing/test_skipping.py",
+          "symbol": "TestEvaluator"
+        },
+        {
+          "path": "changelog/",
+          "symbol": "new .bugfix.rst entry"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "The bug is in src/_pytest/mark/evaluate.py: cached_eval() keys its cache (evalcache_key, a Config-level StoreKey) only on the expression string, so the first-evaluated module's globals are reused for the same condition in other modules. Fix: delete cached_eval and evalcache_key, and inline the compilation/eval logic (using the already-computed item globals `d` from _getglobals()) directly into MarkEvaluator._istrue so each item's condition is evaluated against its own globals. Then add a regression test in testing/test_skipping.py (two modules with the same string condition resolving differently) and a changelog entry under changelog/.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 8,
+        "model_calls": 9,
+        "model_errors": 0,
+        "request_attempts": 11,
+        "parse_retries": 1,
+        "closed_brackets": 1,
+        "model_latency_ms": 19366,
+        "tool_calls": 7,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 2,
+          "list_files": 1,
+          "read_file": 1,
+          "search": 3
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 43641,
+        "output_tokens": 1976,
+        "total_tokens": 45617,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "sphinx-doc__sphinx-8282",
+      "family": "medium",
+      "instance_id": "sphinx-doc__sphinx-8282",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.3333,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "sphinx/ext/autodoc/__init__.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "sphinx/ext/autodoc/__init__.py",
+          "symbol": "FunctionDocumenter.format_signature"
+        },
+        {
+          "path": "sphinx/ext/autodoc/__init__.py",
+          "symbol": "MethodDocumenter.format_signature"
+        },
+        {
+          "path": "sphinx/ext/autodoc/__init__.py",
+          "symbol": "ClassDocumenter.format_signature"
+        },
+        {
+          "path": "sphinx/ext/autodoc/__init__.py",
+          "symbol": "FunctionDocumenter.format_args"
+        },
+        {
+          "path": "sphinx/ext/autodoc/__init__.py",
+          "symbol": "MethodDocumenter.format_args"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "autodoc_typehints is applied in format_args via kwargs.setdefault('show_annotation', False), but the overloaded-callable branches in format_signature bypass format_args and call stringify_signature directly without honoring that setting. The fix belongs in the overload handling inside format_signature of the function and method documenters (and the equivalent overload loop in ClassDocumenter.format_signature which uses show_return_annotation).",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 9,
+        "model_calls": 10,
+        "model_errors": 0,
+        "request_attempts": 11,
+        "parse_retries": 0,
+        "closed_brackets": 0,
+        "model_latency_ms": 21502,
+        "tool_calls": 8,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 1,
+          "read_file": 4,
+          "search": 3
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 67074,
+        "output_tokens": 2502,
+        "total_tokens": 69576,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "pytest-dev__pytest-7432",
+      "family": "medium",
+      "instance_id": "pytest-dev__pytest-7432",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "src/_pytest/skipping.py",
+          "testing/test_skipping.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "src/_pytest/skipping.py",
+          "symbol": "pytest_runtest_makereport"
+        },
+        {
+          "path": "testing/test_skipping.py",
+          "symbol": "test_skip_location"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "The reported behavior is caused by the `--runxfail` handling in `pytest_runtest_makereport` (src/_pytest/skipping.py). The branch `elif item.config.option.runxfail: pass  # don't interfere` (lines 273-274) sits before the marker-based skip fixup `elif item._store.get(skipped_by_mark_key, True) and rep.skipped and type(rep.longrepr) is tuple:` (lines 294-305). When --runxfail is set, that earlier branch wins for every outcome, so the fixup that rewrites `rep.longrepr` from the raise site within pytest to `item.reportinfo()` never runs; the raw `Skipped` tuple longrepr from `pytest_runtest_call`/`pytest_runtest_setup` is reported, yielding the src/_pytest/skipping.py location. The fix is to narrow/relocate the runxfail check so it only suppresses xfail conversion (the `xfail.Exception` and `xfailed` branches) and not the skip-location fixup, keeping XFAIL/XPASS and unittest unexpectedsuccess behavior intact.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 3,
+        "model_calls": 4,
+        "model_errors": 0,
+        "request_attempts": 6,
+        "parse_retries": 1,
+        "closed_brackets": 1,
+        "model_latency_ms": 21845,
+        "tool_calls": 2,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 1,
+          "read_file": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 11594,
+        "output_tokens": 3388,
+        "total_tokens": 14982,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "sphinx-doc__sphinx-8435",
+      "family": "medium",
+      "instance_id": "sphinx-doc__sphinx-8435",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.5,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "sphinx/ext/autodoc/__init__.py",
+          "sphinx/util/typing.py",
+          "sphinx/ext/autodoc/typehints.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "sphinx/ext/autodoc/__init__.py",
+          "symbol": "DataDocumenter.add_directive_header"
+        },
+        {
+          "path": "sphinx/ext/autodoc/__init__.py",
+          "symbol": "AttributeDocumenter.add_directive_header"
+        },
+        {
+          "path": "sphinx/util/typing.py",
+          "symbol": "stringify"
+        },
+        {
+          "path": "sphinx/ext/autodoc/typehints.py",
+          "symbol": "record_typehints"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "Root cause: function/method signatures resolve autodoc_type_aliases by passing them as localns to typing.get_type_hints() in sphinx/util/inspect.py::signature (lines 490-497). The variable/attribute paths in sphinx/ext/autodoc/__init__.py call get_type_hints(self.parent) WITHOUT the aliases and then render the annotation with the alias-unaware stringify helper, so 'String' is never mapped to 'example.MyString'. Fix by threading self.config.autodoc_type_aliases into the get_type_hints()/stringify calls in DataDocumenter.add_directive_header and AttributeDocumenter.add_directive_header (and, for consistency, the autodoc_typehints='description'/'short' path in sphinx/ext/autodoc/typehints.py and the stringify helper in sphinx/util/typing.py).",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 17,
+        "model_calls": 18,
+        "model_errors": 0,
+        "request_attempts": 19,
+        "parse_retries": 0,
+        "closed_brackets": 0,
+        "model_latency_ms": 60091,
+        "tool_calls": 16,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 2,
+          "read_file": 5,
+          "search": 7,
+          "symbol_search": 2
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 135946,
+        "output_tokens": 8841,
+        "total_tokens": 144787,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "sphinx-doc__sphinx-8273",
+      "family": "medium",
+      "instance_id": "sphinx-doc__sphinx-8273",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.5,
+        "file_acc@3": true,
+        "function_recall@3": 0.5,
+        "file_acc@5": true,
+        "function_recall@5": 0.5,
+        "predicted_files": [
+          "sphinx/builders/manpage.py",
+          "tests/test_build_manpage.py",
+          "CHANGES",
+          "sphinx/util/osutil.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "sphinx/builders/manpage.py",
+          "symbol": "ManualPageBuilder.write"
+        },
+        {
+          "path": "tests/test_build_manpage.py",
+          "symbol": "test_all"
+        },
+        {
+          "path": "tests/test_build_manpage.py",
+          "symbol": "test_captioned_code_block"
+        },
+        {
+          "path": "tests/test_build_manpage.py",
+          "symbol": "test_rubric"
+        },
+        {
+          "path": "CHANGES",
+          "symbol": ""
+        },
+        {
+          "path": "sphinx/util/osutil.py",
+          "symbol": "ensuredir"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "Generated man pages are currently written flat into <outdir>/<name>.<section>. To make output MANPATH-compatible, ManualPageBuilder.write must derive each doc's section from the man_pages config entry and write to <outdir>/man<section>/<name>.<section>, creating the section directory (via ensuredir) before writing. Tests asserting flat paths in tests/test_build_manpage.py (and any testroot expectations) must be updated, and CHANGES should note the behavior change.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 15,
+        "model_calls": 16,
+        "model_errors": 0,
+        "request_attempts": 21,
+        "parse_retries": 3,
+        "closed_brackets": 1,
+        "model_latency_ms": 36616,
+        "tool_calls": 14,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 2,
+          "list_files": 1,
+          "read_file": 4,
+          "search": 7
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 81129,
+        "output_tokens": 3445,
+        "total_tokens": 84574,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "django__django-14238",
+      "family": "large",
+      "instance_id": "django__django-14238",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "django/db/models/fields/__init__.py",
+          "tests/model_fields/test_autofield.py",
+          "docs/releases/4.0.txt",
+          "django/db/models/options.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "django/db/models/fields/__init__.py",
+          "symbol": "AutoFieldMeta.__subclasscheck__"
+        },
+        {
+          "path": "tests/model_fields/test_autofield.py",
+          "symbol": "AutoFieldInheritanceTests.test_issubclass_of_autofield"
+        },
+        {
+          "path": "docs/releases/4.0.txt",
+          "symbol": ""
+        },
+        {
+          "path": "django/db/models/fields/__init__.py",
+          "symbol": "AutoFieldMeta.__instancecheck__"
+        },
+        {
+          "path": "django/db/models/options.py",
+          "symbol": "Options._get_default_pk_class"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "The failure comes from AutoFieldMeta.__subclasscheck__ (django/db/models/fields/__init__.py), which currently only accepts the exact classes in the _subclasses tuple (BigAutoField, SmallAutoField) or direct AutoField subclasses. A user subclass of BigAutoField/SmallAutoField is neither in the tuple nor a real subclass of AutoField, so issubclass(pk_class, AutoField) in Options._get_default_pk_class fails with the ValueError. Fix: change __subclasscheck__ to use issubclass(subclass, self._subclasses) so real subclasses of BigAutoField/SmallAutoField pass (mirroring __instancecheck__), keeping ForeignKey/existing behavior intact. Add regression tests in tests/model_fields/test_autofield.py (AutoFieldInheritanceTests) and a release note in docs/releases/4.0.txt. No change to Options._get_default_pk_class is needed since it already delegates to the corrected check.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 7,
+        "model_calls": 8,
+        "model_errors": 0,
+        "request_attempts": 12,
+        "parse_retries": 2,
+        "closed_brackets": 1,
+        "model_latency_ms": 27649,
+        "tool_calls": 6,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 1,
+          "list_files": 1,
+          "read_file": 2,
+          "symbol_search": 2
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 32422,
+        "output_tokens": 3741,
+        "total_tokens": 36163,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "django__django-12915",
+      "family": "large",
+      "instance_id": "django__django-12915",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": null,
+        "file_acc@3": true,
+        "function_recall@3": null,
+        "file_acc@5": true,
+        "function_recall@5": null,
+        "predicted_files": [
+          "django/contrib/staticfiles/handlers.py",
+          "tests/staticfiles_tests/test_liveserver.py",
+          "tests/staticfiles_tests/urls/helper.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "django/contrib/staticfiles/handlers.py",
+          "symbol": "StaticFilesHandlerMixin.get_response_async"
+        },
+        {
+          "path": "django/contrib/staticfiles/handlers.py",
+          "symbol": "StaticFilesHandlerMixin"
+        },
+        {
+          "path": "django/contrib/staticfiles/handlers.py",
+          "symbol": "ASGIStaticFilesHandler"
+        },
+        {
+          "path": "tests/staticfiles_tests/test_liveserver.py",
+          "symbol": "StaticLiveServerView"
+        },
+        {
+          "path": "tests/staticfiles_tests/urls/helper.py",
+          "symbol": "staticfiles_urlpatterns"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "ASGIStaticFilesHandler inherits StaticFilesHandlerMixin, which only defines sync get_response(). StaticFilesHandlerMixin.load_middleware() is a no-op, so ASGIHandler._middleware_chain stays None and ASGIHandler.get_response_async -> base get_response_async calls self._middleware_chain(request), raising TypeError: 'NoneType' object is not callable. The fix is to add an async get_response_async coroutine to StaticFilesHandlerMixin (mirroring get_response: serve the static path, falling back to response_for_exception on Http404), using sync_to_async for the synchronous serve() call, so ASGIStaticFilesHandler inherits proper async static serving while StaticFilesHandler keeps its sync get_response override. Tests covering this should be added in tests/staticfiles_tests (new async handler test, plus url/helper fixtures for ASGI application).",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 17,
+        "model_calls": 18,
+        "model_errors": 0,
+        "request_attempts": 21,
+        "parse_retries": 1,
+        "closed_brackets": 1,
+        "model_latency_ms": 43996,
+        "tool_calls": 16,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 3,
+          "list_files": 2,
+          "read_file": 8,
+          "search": 2,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 80906,
+        "output_tokens": 5075,
+        "total_tokens": 85981,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "matplotlib__matplotlib-25442",
+      "family": "large",
+      "instance_id": "matplotlib__matplotlib-25442",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.0,
+        "file_acc@3": true,
+        "function_recall@3": 0.2,
+        "file_acc@5": true,
+        "function_recall@5": 0.6,
+        "predicted_files": [
+          "lib/matplotlib/offsetbox.py",
+          "lib/matplotlib/tests/test_offsetbox.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "lib/matplotlib/offsetbox.py",
+          "symbol": "DraggableBase.canvas"
+        },
+        {
+          "path": "lib/matplotlib/offsetbox.py",
+          "symbol": "DraggableBase.disconnect"
+        },
+        {
+          "path": "lib/matplotlib/offsetbox.py",
+          "symbol": "DraggableBase._check_still_parented"
+        },
+        {
+          "path": "lib/matplotlib/offsetbox.py",
+          "symbol": "DraggableBase.on_release"
+        },
+        {
+          "path": "lib/matplotlib/offsetbox.py",
+          "symbol": "DraggableBase.__init__"
+        },
+        {
+          "path": "lib/matplotlib/tests/test_offsetbox.py",
+          "symbol": ""
+        }
+      ],
+      "passed": false,
+      "status": "completed",
+      "summary": "Root cause: In `lib/matplotlib/offsetbox.py`, `DraggableBase.canvas` is defined as `property(lambda self: self.ref_artist.figure.canvas)`. When an artist (e.g. the AnnotationBbox ref_artist used by mplcursors) is removed from its figure during interaction, `ref_artist.figure` becomes `None`. `DraggableBase.on_release` calls `_check_still_parented()`, which sees `self.ref_artist.figure is None`, calls `self.disconnect()`, and `disconnect()` iterates `self.cids` calling `self.canvas.mpl_disconnect(cid)` — evaluating the `canvas` property on a None figure raises `AttributeError: 'NoneType' object has no attribute 'canvas'`. The fix is to make `DraggableBase`/`AnnotationBbox` disconnect safely when the ref artist has lost its figure: guard the `canvas` property (return stored canvas or None), make `_check_still_parented`/`disconnect` tolerate a missing figure/canvas, and avoid storing the canvas lookup only via ref_artist (e.g. cache the canvas at connect time). Preserve existing behavior for valid, still-parented artists. A regression test reproducing the detached-ref_artist scenario belongs in lib/matplotlib/tests/test_offsetbox.py.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": false
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 16,
+        "model_calls": 17,
+        "model_errors": 0,
+        "request_attempts": 21,
+        "parse_retries": 2,
+        "closed_brackets": 1,
+        "model_latency_ms": 76970,
+        "tool_calls": 15,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 1,
+          "read_file": 4,
+          "search": 9,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 123963,
+        "output_tokens": 11331,
+        "total_tokens": 135294,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "sympy__sympy-17630",
+      "family": "large",
+      "passed": false,
+      "status": "error",
+      "error": "RuntimeError: Model request failed after retries: Model response did not contain a JSON object.",
+      "assertions": [],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": false,
+        "steps": 0,
+        "model_calls": 1,
+        "model_errors": 1,
+        "request_attempts": 3,
+        "parse_retries": 1,
+        "closed_brackets": 0,
+        "model_latency_ms": 40955,
+        "tool_calls": 0,
+        "tool_errors": 0,
+        "tool_counts": {},
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 6409,
+        "output_tokens": 8502,
+        "total_tokens": 14911,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      },
+      "fatal": false
+    },
+    {
+      "name": "django__django-11099",
+      "family": "large",
+      "instance_id": "django__django-11099",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.0,
+        "file_acc@3": true,
+        "function_recall@3": 0.0,
+        "file_acc@5": true,
+        "function_recall@5": 0.0,
+        "predicted_files": [
+          "django/contrib/auth/validators.py",
+          "tests/auth_tests/test_validators.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "django/contrib/auth/validators.py",
+          "symbol": "ASCIIUsernameValidator.regex"
+        },
+        {
+          "path": "django/contrib/auth/validators.py",
+          "symbol": "UnicodeUsernameValidator.regex"
+        },
+        {
+          "path": "tests/auth_tests/test_validators.py",
+          "symbol": "UsernameValidatorsTests.test_unicode_validator"
+        },
+        {
+          "path": "tests/auth_tests/test_validators.py",
+          "symbol": "UsernameValidatorsTests.test_ascii_validator"
+        }
+      ],
+      "passed": false,
+      "status": "completed",
+      "summary": "The trailing-newline bug comes from `$` anchors in the two username validator regexes in django/contrib/auth/validators.py. `ASCIIUsernameValidator.regex` (line 10) and `UnicodeUsernameValidator.regex` (line 20) both use r'^[\\w.@+-]+$'; both should be changed to r'\\A[\\w.@+-]+\\Z'. Tests belong in UsernameValidatorsTests (tests/auth_tests/test_validators.py, lines 234-261), where 'user\\n' should be added to the invalid_usernames lists for both test_unicode_validator and test_ascii_validator.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": false
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 7,
+        "model_calls": 8,
+        "model_errors": 0,
+        "request_attempts": 9,
+        "parse_retries": 0,
+        "closed_brackets": 0,
+        "model_latency_ms": 18074,
+        "tool_calls": 6,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 2,
+          "read_file": 2,
+          "search": 1,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 23692,
+        "output_tokens": 2088,
+        "total_tokens": 25780,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "sympy__sympy-23117",
+      "family": "large",
+      "instance_id": "sympy__sympy-23117",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.3333,
+        "file_acc@3": true,
+        "function_recall@3": 0.3333,
+        "file_acc@5": true,
+        "function_recall@5": 0.3333,
+        "predicted_files": [
+          "sympy/tensor/array/ndim_array.py",
+          "sympy/tensor/array/dense_ndim_array.py",
+          "sympy/tensor/array/sparse_ndim_array.py",
+          "sympy/tensor/array/tests/test_ndim_array.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "sympy/tensor/array/ndim_array.py",
+          "symbol": "NDimArray._scan_iterable_shape.f"
+        },
+        {
+          "path": "sympy/tensor/array/ndim_array.py",
+          "symbol": "NDimArray._scan_iterable_shape"
+        },
+        {
+          "path": "sympy/tensor/array/ndim_array.py",
+          "symbol": "NDimArray._handle_ndarray_creation_inputs"
+        },
+        {
+          "path": "sympy/tensor/array/dense_ndim_array.py",
+          "symbol": "ImmutableDenseNDimArray._new"
+        },
+        {
+          "path": "sympy/tensor/array/dense_ndim_array.py",
+          "symbol": "MutableDenseNDimArray._new"
+        },
+        {
+          "path": "sympy/tensor/array/sparse_ndim_array.py",
+          "symbol": "ImmutableSparseNDimArray._new"
+        },
+        {
+          "path": "sympy/tensor/array/sparse_ndim_array.py",
+          "symbol": "MutableSparseNDimArray._new"
+        },
+        {
+          "path": "sympy/tensor/array/tests/test_ndim_array.py",
+          "symbol": "test_ndim_array_initiation"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "Array([]) raises ValueError in NDimArray._scan_iterable_shape.f: for an empty iterable, `zip(*[f(i) for i in pointer])` cannot unpack, so no shape is inferred. Matrix([]) works because matrices handle empty lists directly. Fix should add an early branch for empty iterables in _scan_iterable_shape (returning [], (0,)) or in NDimArray._handle_ndarray_creation_inputs before calling the scan, then verify DenseNDimArray/ImmutableDenseNDimArray and SparseNDimArray _new path handle shape (0,) with an empty flat list (flat_list=Tuple(), _loop_size via reduce with initializer 1 works). Add regression tests in sympy/tensor/array/tests covering Array([]) and immutable dense/sparse equivalents.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 16,
+        "model_calls": 17,
+        "model_errors": 0,
+        "request_attempts": 20,
+        "parse_retries": 1,
+        "closed_brackets": 1,
+        "model_latency_ms": 40576,
+        "tool_calls": 14,
+        "tool_errors": 1,
+        "tool_counts": {
+          "inspect_python": 3,
+          "list_files": 1,
+          "read_file": 6,
+          "search": 3,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 127983,
+        "output_tokens": 3530,
+        "total_tokens": 131513,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "django__django-14730",
+      "family": "large",
+      "instance_id": "django__django-14730",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "django/db/models/fields/related.py",
+          "django/db/models/fields/reverse_related.py",
+          "docs/ref/checks.txt",
+          "docs/ref/models/fields.txt",
+          "tests/invalid_models_tests/test_relative_fields.py",
+          "docs/releases/3.2.txt"
+        ]
+      },
+      "locations": [
+        {
+          "path": "django/db/models/fields/related.py",
+          "symbol": "ManyToManyField.__init__"
+        },
+        {
+          "path": "django/db/models/fields/related.py",
+          "symbol": "ManyToManyField.check"
+        },
+        {
+          "path": "django/db/models/fields/related.py",
+          "symbol": "ManyToManyField._check_ignored_options"
+        },
+        {
+          "path": "django/db/models/fields/reverse_related.py",
+          "symbol": "ManyToManyRel.__init__"
+        },
+        {
+          "path": "docs/ref/checks.txt",
+          "symbol": "checks reference: fields.E340"
+        },
+        {
+          "path": "docs/ref/models/fields.txt",
+          "symbol": "ManyToManyField.symmetrical"
+        },
+        {
+          "path": "tests/invalid_models_tests/test_relative_fields.py",
+          "symbol": "test_relative_fields E33x M2M checks (~lines 1228-1330)"
+        },
+        {
+          "path": "docs/releases/3.2.txt",
+          "symbol": "release notes (in-development release file)"
+        }
+      ],
+      "passed": false,
+      "status": "completed",
+      "summary": "The change is centered on ManyToManyField in django/db/models/fields/related.py: its __init__ sets remote_field.symmetrical (defaulting True for self-referential fields) and remote_field.related_name, while no reverse related field is created when symmetrical. A new check (next free id fields.E341) should be added as a ManyToManyField method and registered in ManyToManyField.check() alongside _check_ignored_options/_check_relationship_model. Supporting edits: docs/ref/checks.txt needs the new fields.E341 entry after fields.E340, docs/ref/models/fields.txt needs a note in the ManyToManyField.symmetrical section, a release note is needed under docs/releases/ (the in-development file in this checkout), and new tests belong in tests/invalid_models_tests/test_relative_fields.py (mirroring existing E33x M2M check tests at lines ~1228-1330). Existing tests/m2m_* models use related_name only with symmetrical=False (plus tests/m2m_recursive/models.py colleagues which uses no related_name), so they should not trip the new check; tests/m2m_regress/models.py SelfRefer comments confirm symmetrical self-referential fields get no related name.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": false
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 17,
+        "model_calls": 18,
+        "model_errors": 0,
+        "request_attempts": 20,
+        "parse_retries": 0,
+        "closed_brackets": 1,
+        "model_latency_ms": 60997,
+        "tool_calls": 16,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 1,
+          "list_files": 1,
+          "read_file": 6,
+          "search": 8
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 127803,
+        "output_tokens": 7647,
+        "total_tokens": 135450,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "django__django-14752",
+      "family": "large",
+      "instance_id": "django__django-14752",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.5,
+        "file_acc@3": true,
+        "function_recall@3": 0.5,
+        "file_acc@5": true,
+        "function_recall@5": 0.5,
+        "predicted_files": [
+          "django/contrib/admin/views/autocomplete.py",
+          "tests/admin_views/test_autocomplete_view.py",
+          "docs/ref/contrib/admin/index.txt"
+        ]
+      },
+      "locations": [
+        {
+          "path": "django/contrib/admin/views/autocomplete.py",
+          "symbol": "AutocompleteJsonView.get"
+        },
+        {
+          "path": "django/contrib/admin/views/autocomplete.py",
+          "symbol": "AutocompleteJsonView.serialize_result"
+        },
+        {
+          "path": "tests/admin_views/test_autocomplete_view.py",
+          "symbol": "AutocompleteJsonViewTests"
+        },
+        {
+          "path": "docs/ref/contrib/admin/index.txt",
+          "symbol": ""
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "Add an overridable serialize_result() hook to AutocompleteJsonView. In django/contrib/admin/views/autocomplete.py, get() currently builds each result inline as {'id': str(getattr(obj, to_field_name)), 'text': str(obj)}. That conversion must be extracted into a new method AutocompleteJsonView.serialize_result(self, obj, to_field_name), and the list comprehension inside the JsonResponse in get() must call self.serialize_result(obj, to_field_name) instead. Supporting changes: a regression test subclassing AutocompleteJsonView with a custom serialize_result in tests/admin_views/test_autocomplete_view.py, and documentation of the extension point in docs/ref/contrib/admin/index.txt.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 5,
+        "model_calls": 6,
+        "model_errors": 0,
+        "request_attempts": 6,
+        "parse_retries": 0,
+        "closed_brackets": 0,
+        "model_latency_ms": 13619,
+        "tool_calls": 4,
+        "tool_errors": 0,
+        "tool_counts": {
+          "read_file": 1,
+          "search": 2,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 20731,
+        "output_tokens": 1552,
+        "total_tokens": 22283,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "sympy__sympy-16503",
+      "family": "large",
+      "instance_id": "sympy__sympy-16503",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.5,
+        "file_acc@3": true,
+        "function_recall@3": 0.5,
+        "file_acc@5": true,
+        "function_recall@5": 0.5,
+        "predicted_files": [
+          "sympy/printing/pretty/pretty.py",
+          "sympy/printing/pretty/tests/test_pretty.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "sympy/printing/pretty/pretty.py",
+          "symbol": "PrettyPrinter._print_Sum"
+        },
+        {
+          "path": "sympy/printing/pretty/tests/test_pretty.py",
+          "symbol": "test_pretty_sum"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "The vertical misalignment originates in PrettyPrinter._print_Sum (sympy/printing/pretty/pretty.py). The method builds the summation sign plus limits and then overwrites prettyF.baseline = max_upper + sign_height//2 (line 632), and also adjusts prettyF.baseline inside the first-limit branch (lines 621-622) to center the summand on the sign. That baseline is what the enclosing Add printer uses to align '+ 3'; because it points at the sign center rather than the summand row, the summand 'x' is rendered too high relative to the rest of the expression. The fix must be made in _print_Sum (adjusting how the summand's baseline is computed/set), and a regression assertion should be added to test_pretty_sum in sympy/printing/pretty/tests/test_pretty.py.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 7,
+        "model_calls": 8,
+        "model_errors": 0,
+        "request_attempts": 10,
+        "parse_retries": 1,
+        "closed_brackets": 0,
+        "model_latency_ms": 33143,
+        "tool_calls": 6,
+        "tool_errors": 0,
+        "tool_counts": {
+          "read_file": 2,
+          "search": 3,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 35790,
+        "output_tokens": 5562,
+        "total_tokens": 41352,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "django__django-10914",
+      "family": "large",
+      "instance_id": "django__django-10914",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": null,
+        "file_acc@3": true,
+        "function_recall@3": null,
+        "file_acc@5": true,
+        "function_recall@5": null,
+        "predicted_files": [
+          "django/conf/global_settings.py",
+          "django/core/files/storage.py",
+          "tests/file_storage/tests.py",
+          "docs/ref/settings.txt",
+          "docs/topics/files.txt",
+          "docs/releases/index.txt"
+        ]
+      },
+      "locations": [
+        {
+          "path": "django/conf/global_settings.py",
+          "symbol": "FILE_UPLOAD_PERMISSIONS"
+        },
+        {
+          "path": "django/core/files/storage.py",
+          "symbol": "FileSystemStorage.file_permissions_mode"
+        },
+        {
+          "path": "django/core/files/storage.py",
+          "symbol": "FileSystemStorage._save"
+        },
+        {
+          "path": "tests/file_storage/tests.py",
+          "symbol": "FileSystemStorageTests.test_file_upload_default_permissions"
+        },
+        {
+          "path": "docs/ref/settings.txt",
+          "symbol": "FILE_UPLOAD_PERMISSIONS"
+        },
+        {
+          "path": "docs/topics/files.txt",
+          "symbol": ""
+        },
+        {
+          "path": "docs/releases/index.txt",
+          "symbol": ""
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "Set FILE_UPLOAD_PERMISSIONS default to 0o644. The change point is django/conf/global_settings.py (line 307). FileSystemStorage.file_permissions_mode/_save already consume the setting, so no logic change is required there. Update docs/ref/settings.txt (FILE_UPLOAD_PERMISSIONS entry) and docs/topics/files.txt to note the new default and the upload-handler/tempfile inconsistency, add a release note under docs/releases, and update tests/file_storage/tests.py:test_file_upload_default_permissions which currently overrides the setting to None and asserts the umask-based mode.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 16,
+        "model_calls": 17,
+        "model_errors": 0,
+        "request_attempts": 21,
+        "parse_retries": 2,
+        "closed_brackets": 0,
+        "model_latency_ms": 45681,
+        "tool_calls": 14,
+        "tool_errors": 1,
+        "tool_counts": {
+          "inspect_python": 1,
+          "read_file": 7,
+          "search": 6
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 86595,
+        "output_tokens": 4492,
+        "total_tokens": 91087,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "sympy__sympy-13895",
+      "family": "large",
+      "instance_id": "sympy__sympy-13895",
+      "localization": {
+        "file_acc@1": false,
+        "function_recall@1": 0.0,
+        "file_acc@3": false,
+        "function_recall@3": 0.0,
+        "file_acc@5": false,
+        "function_recall@5": 0.0,
+        "predicted_files": []
+      },
+      "locations": [],
+      "passed": false,
+      "status": "failed",
+      "summary": "Agent reached its step budget without finishing.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": false
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": false,
+        "steps": 18,
+        "model_calls": 19,
+        "model_errors": 0,
+        "request_attempts": 23,
+        "parse_retries": 1,
+        "closed_brackets": 0,
+        "model_latency_ms": 170662,
+        "tool_calls": 16,
+        "tool_errors": 2,
+        "tool_counts": {
+          "inspect_python": 2,
+          "read_file": 7,
+          "search": 7
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 168530,
+        "output_tokens": 30938,
+        "total_tokens": 199468,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "django__django-13768",
+      "family": "large",
+      "instance_id": "django__django-13768",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "django/dispatch/dispatcher.py",
+          "tests/dispatch/tests.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "django/dispatch/dispatcher.py",
+          "symbol": "Signal.send_robust"
+        },
+        {
+          "path": "django/dispatch/dispatcher.py",
+          "symbol": "module-level logger/imports"
+        },
+        {
+          "path": "tests/dispatch/tests.py",
+          "symbol": "DispatcherTests.test_send_robust_fail"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "Add a module-level logger (logging.getLogger('django.dispatch')) and call logger.exception('Error calling %r', receiver) inside the except Exception block of Signal.send_robust, keeping the existing (receiver, err) response append intact. A test should be added alongside the existing send_robust tests (test_send_robust_fail) in tests/dispatch/tests.py, e.g. using assertLogs('django.dispatch').",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 6,
+        "model_calls": 7,
+        "model_errors": 0,
+        "request_attempts": 7,
+        "parse_retries": 0,
+        "closed_brackets": 0,
+        "model_latency_ms": 10925,
+        "tool_calls": 5,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 1,
+          "read_file": 3,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 20352,
+        "output_tokens": 1585,
+        "total_tokens": 21937,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "django__django-11001",
+      "family": "large",
+      "instance_id": "django__django-11001",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "django/db/models/sql/compiler.py",
+          "tests/ordering/tests.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "django/db/models/sql/compiler.py",
+          "symbol": "SQLCompiler.__init__"
+        },
+        {
+          "path": "django/db/models/sql/compiler.py",
+          "symbol": "SQLCompiler.get_order_by"
+        },
+        {
+          "path": "django/db/models/sql/compiler.py",
+          "symbol": "SQLCompiler.get_extra_select"
+        },
+        {
+          "path": "tests/ordering/tests.py",
+          "symbol": ""
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "The bug is in django/db/models/sql/compiler.py. SQLCompiler.__init__ compiles self.ordering_parts = re.compile(r'(.*)\\s(ASC|DESC)(.*)') without re.DOTALL/re.MULTILINE, so for multiline RawSQL order-by SQL the capture group (.*) matches only the final line, making distinct expressions with identical last lines look like duplicates. SQLCompiler.get_order_by uses that capture as the dedup key (without_ordering = self.ordering_parts.search(sql).group(1)), and SQLCompiler.get_extra_select uses the same extraction. The fix is to make ordering_parts match the whole expression across newlines (e.g. re.compile(r'(.*)\\s(ASC|DESC)(.*)', re.MULTILINE | re.DOTALL), or normalize sql before searching), keeping the captured substring correct for single-line and unicode SQL. A regression test with multiline RawSQL order-by clauses sharing identical last lines should be added in tests/ordering/tests.py.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 16,
+        "model_calls": 17,
+        "model_errors": 0,
+        "request_attempts": 19,
+        "parse_retries": 1,
+        "closed_brackets": 1,
+        "model_latency_ms": 25424,
+        "tool_calls": 15,
+        "tool_errors": 0,
+        "tool_counts": {
+          "inspect_python": 1,
+          "list_files": 3,
+          "read_file": 5,
+          "search": 6
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 114154,
+        "output_tokens": 3441,
+        "total_tokens": 117595,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "sympy__sympy-12454",
+      "family": "large",
+      "instance_id": "sympy__sympy-12454",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 0.5,
+        "file_acc@3": true,
+        "function_recall@3": 0.5,
+        "file_acc@5": true,
+        "function_recall@5": 0.5,
+        "predicted_files": [
+          "sympy/matrices/matrices.py",
+          "sympy/matrices/tests/test_matrices.py",
+          "sympy/matrices/tests/test_commonmatrix.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "sympy/matrices/matrices.py",
+          "symbol": "MatrixProperties.is_upper"
+        },
+        {
+          "path": "sympy/matrices/tests/test_matrices.py",
+          "symbol": "test_is_upper"
+        },
+        {
+          "path": "sympy/matrices/tests/test_commonmatrix.py",
+          "symbol": "test_is_upper"
+        },
+        {
+          "path": "sympy/matrices/matrices.py",
+          "symbol": "MatrixProperties._eval_is_lower"
+        },
+        {
+          "path": "sympy/matrices/tests/test_matrices.py",
+          "symbol": "test_is_lower"
+        },
+        {
+          "path": "sympy/matrices/tests/test_commonmatrix.py",
+          "symbol": "test_is_lower"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "MatrixProperties.is_upper (sympy/matrices/matrices.py, lines 1112-1115) iterates `for j in range(i)` without bounding by the number of columns, so for tall matrices (rows > cols) it accesses out-of-range columns (e.g. index (3,2) in a 4x2 matrix) and raises IndexError. The symmetric is_lower path is already correct because it delegates to _eval_is_lower, which bounds the column index with `range(i + 1, self.cols)`. The fix is to bound the inner loop in is_upper, e.g. `for j in range(min(i, self.cols))`, consistent with the existing style. Regression tests should be added for tall (e.g. zeros(4,2)), wide, square, and zero matrices in both test suites.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 6,
+        "model_calls": 7,
+        "model_errors": 0,
+        "request_attempts": 7,
+        "parse_retries": 0,
+        "closed_brackets": 0,
+        "model_latency_ms": 12468,
+        "tool_calls": 5,
+        "tool_errors": 0,
+        "tool_counts": {
+          "read_file": 3,
+          "symbol_search": 2
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 23994,
+        "output_tokens": 2130,
+        "total_tokens": 26124,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "sympy__sympy-20154",
+      "family": "large",
+      "instance_id": "sympy__sympy-20154",
+      "localization": {
+        "file_acc@1": true,
+        "function_recall@1": 1.0,
+        "file_acc@3": true,
+        "function_recall@3": 1.0,
+        "file_acc@5": true,
+        "function_recall@5": 1.0,
+        "predicted_files": [
+          "sympy/utilities/iterables.py",
+          "sympy/utilities/tests/test_iterables.py"
+        ]
+      },
+      "locations": [
+        {
+          "path": "sympy/utilities/iterables.py",
+          "symbol": "partitions"
+        },
+        {
+          "path": "sympy/utilities/tests/test_iterables.py",
+          "symbol": "test_partitions"
+        }
+      ],
+      "passed": true,
+      "status": "completed",
+      "summary": "partitions() yields the shared mutable dict ms at lines 1805/1807 and 1845/1847; change to per-yield copies (dict(ms)/ms.copy()). Update docstring caveat/doctest at lines 1741-1754 and tests in test_iterables.py::test_partitions.",
+      "assertions": [
+        {
+          "type": "top1_location",
+          "passed": true
+        }
+      ],
+      "changed_files": [],
+      "agent_checks": [],
+      "benchmark_checks": [],
+      "mutation_checks": [],
+      "metrics": {
+        "completed": true,
+        "steps": 8,
+        "model_calls": 9,
+        "model_errors": 0,
+        "request_attempts": 11,
+        "parse_retries": 1,
+        "closed_brackets": 0,
+        "model_latency_ms": 21686,
+        "tool_calls": 5,
+        "tool_errors": 2,
+        "tool_counts": {
+          "inspect_python": 1,
+          "read_file": 2,
+          "search": 1,
+          "symbol_search": 1
+        },
+        "changed_files": 0,
+        "checks_passed": 0,
+        "checks_failed": 0,
+        "input_tokens": 80731,
+        "output_tokens": 3553,
+        "total_tokens": 84284,
+        "provider_models": [
+          "deepseek-flash"
+        ]
+      }
+    }
+  ]
+}

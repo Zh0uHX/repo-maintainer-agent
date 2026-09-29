@@ -1,3 +1,5 @@
+> **Superseded by `full-guidance-ablation.md`.** This interim cut used only the 12 cases that finished without error in all six interrupted runs (no large repositories) and its conclusion did not hold on the full data.
+
 # Repeated-run localization comparison
 
 ## Runs
