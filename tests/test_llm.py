@@ -166,6 +166,20 @@ class ParseJsonTests(unittest.TestCase):
             self.assertEqual(client.complete([{"role": "user", "content": "x"}]), {"ok": 1})
         sleep.assert_called_once_with(10)
 
+    def test_dropped_connection_is_retried(self):
+        import http.client
+
+        ok = FakeResponse({"choices": [{"message": {"content": '{"ok": 1}'}}]})
+        client = OpenAICompatibleClient(
+            model="configured-model", api_key=None, base_url="https://example.test/v1", retries=1
+        )
+        with (
+            patch("urllib.request.urlopen", side_effect=[http.client.IncompleteRead(b""), ok]),
+            patch("time.sleep"),
+        ):
+            self.assertEqual(client.complete([{"role": "user", "content": "x"}]), {"ok": 1})
+        self.assertEqual(client.last_metadata["request_attempts"], 2)
+
 
 if __name__ == "__main__":
     unittest.main()

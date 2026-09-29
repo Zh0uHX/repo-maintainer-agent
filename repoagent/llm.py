@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import http.client
 import json
 import time
 import urllib.error
@@ -152,6 +153,9 @@ class OpenAICompatibleClient:
                 return parsed
             except (
                 urllib.error.URLError,
+                # Dropped connections mid-response (IncompleteRead, RemoteDisconnected).
+                http.client.HTTPException,
+                ConnectionError,
                 KeyError,
                 IndexError,
                 json.JSONDecodeError,
